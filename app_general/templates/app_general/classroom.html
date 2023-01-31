@@ -1,0 +1,37 @@
+{% extends 'app_general/components/base.html' %}
+{% load static %}
+
+{% block title %}
+{% endblock %}
+
+{% block content %}
+<section class="classroomsec">
+    <div class="classroomdiv">
+        <h4>ห้องเรียน"{{ thiscourse.name }}"ที่เปิดรับสมัคร</h4>
+        {% for class in allclass_active %}
+            <div>
+                <a href="{% url 'registerform' class.id %}">
+                    <button type="submit" class="btn btn-primary mb-3 submitbtn">
+                        {{ class.course.name }} | {{ class.get_class_type_display }} ( {{ class.generation }} : {{ class.date_start }} - {{ class.date_end }} )
+                        <br>
+                        {% if class.get_status_price == 'earlybird' %}
+
+                            <span style="color: red;">ราคา {{ class.get_now_price|floatformat:'g' }} ฿</span> <del style="color:  var(--grey);">{{ class.price_fullprice|floatformat:'g' }} ฿</del>
+
+                        {% elif class.get_status_price == 'promotion' %} 
+
+                            <span style="color: red;">ราคา {{ class.get_now_price|floatformat:'g' }} ฿</span> <del style="color: var(--grey);">{{ class.price_fullprice|floatformat:'g' }} ฿</del>
+
+                        {% elif class.get_status_price == 'fullprice' %} 
+
+                            <span>ราคา {{ class.get_now_price|floatformat:'g' }} ฿</span>
+
+                        {% endif %}
+
+                    </button>
+                </a>
+            </div>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

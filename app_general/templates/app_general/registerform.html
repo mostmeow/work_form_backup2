@@ -1,0 +1,799 @@
+{% extends 'app_general/components/base.html' %}
+{% load static %}
+
+{% block title %}
+{% endblock %}
+
+{% block content %}
+
+<section id="headbar">
+
+    <img class="logoimg" src="{% static 'app_general/assets/pic/cmsklogo.png' %}"/>  
+    
+</section>
+<section class="regissec">
+
+    <h2 style="font-weight: 600;">{{ thisclass.course.name }}</h2>
+    <h3>{{ thisclass.get_class_type_display }}</h3>
+
+    {% if thisclass.get_status_price == 'earlybird' %}
+
+        <h3 style="color: red;">ราคา {{ thisclass.get_now_price|floatformat:'g' }} ฿</h3> <del style="color:  var(--grey);">{{ thisclass.price_fullprice|floatformat:'g' }} ฿</del>
+
+    {% elif thisclass.get_status_price == 'promotion' %} 
+
+        <h3 style="color: red;">ราคา {{ thisclass.get_now_price|floatformat:'g' }} ฿</h3> <del style="color: var(--grey);">{{ thisclass.price_fullprice|floatformat:'g' }} ฿</del>
+
+    {% elif thisclass.get_status_price == 'fullprice' %} 
+
+        <h3>ราคา {{ thisclass.get_now_price|floatformat:'g' }} ฿</h3>
+
+    {% endif %}
+
+    <p>{{ thisclass.date_start }} - {{ thisclass.date_end }}</p>
+
+    <div>
+        <h3 style="font-weight: 600;">รายละเอียดการสมัครหลักสูตรอบรม</h3>
+        <p style="font-weight: 600;">สิทธิพิเศษสำหรับสมาชิกสมาคม / นิสิต นักศึกษา รับส่วนลดเพิ่ม ดังนี้</p>
+
+        <ul>
+            <li>สมาชิกสมาคมประเภทนิติบุคคล รับส่วนลดเพิ่ม 300</li>
+            <li>สมาชิกสมาคมประเภท AFPT, CFP รับส่วนลดเพิ่ม 300</li>
+            <li>นักศึกษา รับส่วนลดเพิ่ม 1,000</li>
+        </ul><br>    
+
+        <p style="font-weight: 600;">หมายเหตุ</p>
+
+        <ul>
+            <li>กรณีชำระด้วยบัตรเครดิต จะมีค่าธรรมเนียม 3%</li>
+            <li>กรณีมีการหักภาษี ณ ที่จ่าย ต้องนำใบหักภาษี ณ ที่จ่ายฉบับจริง มาตามที่อยู่ที่ระบุด้านล่าง</li>
+        </ul>
+
+        <p>    
+            บริษัท ซีเอ็มเอสเค จำกัด (ฝ่ายบัญชี) 126/103 อาคารซี.เอ็ม.ทาวเวอร์ ชั้น 26 ถ.กรุงธนบุรี แขวงบางลำภูล่าง เขตคลองสาน กรุงเทพฯ 10600 เท่านั้น
+        </p>
+        
+        <p style="font-weight: 600;">** ทั้งนี้ระบบของการสมัครจะคิดราคาที่ต้องชำระโดยอัตโนมัติ</p>
+    </div>
+
+    <!-- // -->
+
+    <div class="regisdiv">
+        <form action="" name="regisform" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <div class="inputdiv">
+                <label for="#" class="form-label headregisform">อีเมล์</label><span class="starrequire">*</span>
+                <input class="form-control" type="email" name="email" placeholder="example@mail.com" required maxlength="200">
+            </div>
+            
+            <div class="inputdiv">
+                <label for="#" class="form-label headregisform">ชื่อ</label><span class="starrequire">*</span>
+                <input class="form-control" type="text" name="name" placeholder="ชื่อ" required maxlength="200">
+            </div>
+            
+            <div class="inputdiv">
+                <label for="#" class="form-label headregisform">นามสกุล</label><span class="starrequire">*</span>
+                <input class="form-control" type="text" name="lastname" placeholder="นามสกุล" required maxlength="200">
+            </div>
+
+            <div class="inputdiv">
+                <label for="#" class="form-label headregisform">เบอร์โทรศัพท์</label><span class="starrequire">*</span>
+                <input class="form-control" type="number" name="phone" placeholder="xxxxxxxxxx" required>
+            </div>
+
+            <div class="inputdiv">
+                <label for="#" class="form-label headregisform">อาชีพของท่าน</label><span class="starrequire">*</span>
+                <div style="display: flex; flex-direction: column;">
+
+                    <div class="radiolabeldiv">
+                        <input type="radio" name="job" required value="ธนาคาร">
+                        <label for="#" class="form-label">ธนาคาร</label>
+                    </div> 
+
+                    <div class="radiolabeldiv">   
+                        <input type="radio" name="job" required value="พนักงาน บล./บลจ.">
+                        <label for="#" class="form-label">พนักงาน บล./บลจ.</label>
+                    </div>   
+                    
+                    <div class="radiolabeldiv">
+                        <input type="radio" name="job" required value="ตัวแทนประกัน">
+                        <label for="#" class="form-label">ตัวแทนประกัน</label>
+                    </div>   
+                    
+                    <div class="radiolabeldiv">
+                        <input type="radio" name="job" required value="ธุรกิจส่วนตัว">
+                        <label for="#" class="form-label">ธุรกิจส่วนตัว</label>
+                    </div> 
+                    
+                    <div class="radiolabeldiv">
+                        <input type="radio" name="job" required value="นักศึกษา">
+                        <label for="#" class="form-label">นักศึกษา</label>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="inputdiv">
+                <label for="#" class="form-label headregisform">ท่านทราบข่าวการอบรมของเรา(สามารถเลือกได้มากกว่า 1 ข้อ)</label><span class="starrequire">*</span>
+                {{ regisform.channel }}
+            </div>
+
+            <div class="inputdiv">
+                <label for="#" class="form-label headregisform">ท่านเคยมีบัญชีใช้งาน E-learning กับ CMSK หรือไม่</label><span class="starrequire">*</span>
+
+                <div style="display: flex; flex-direction: column;">
+                    <div class="radiolabeldiv">
+                        <input type="radio" name="haveaccout" required value="True" id="haveoldacc" onchange="displayoldaccform()">
+                        <label for="#" class="form-label">มี</label>
+                    </div>
+
+                    <div class="radiolabeldiv">
+                        <input type="radio" name="haveaccout" required value="False" onchange="displayoldaccform()">
+                        <label for="#" class="form-label">ไม่มี</label>
+                    </div>
+                </div>    
+            </div>
+
+            <!-- //ถ้ามีบัญชีเดิม กรอกบัญชีเดิม -->
+            <div class="inputdiv" id="oldaccform" style="display: none;">
+                <label for="#" class="form-label headregisform">โปรดกรอกบัญชีผู้ใช้งาน E-learning ที่ท่านมี</label><span class="starrequire">*</span>
+                <input class="form-control" type="text" name="oldaccout" placeholder="ตัวอย่าง ชื่อบัญชีผู้ใช้งาน : cmsk22Axxxx" maxlength="200">
+            </div>
+            <!-- // -->
+
+            <div class="inputdiv">
+                <label for="#" class="form-label headregisform">ออกใบเสร็จในนาม</label><span class="starrequire">*</span>
+
+                <div style="display: flex; flex-direction: column;">
+                    <div class="radiolabeldiv">
+                        <input type="radio" name="receipt_cover" required value="นามบุคคล" id="indicheck" onchange="switchreceiptform()">
+                        <label for="#" class="form-label">นามบุคคล</label>
+                    </div>
+
+                    <div class="radiolabeldiv">
+                        <input type="radio" name="receipt_cover" required value="นามองค์กร" id="orgcheck" onchange="switchreceiptform()">
+                        <label for="#" class="form-label">นามองค์กร</label>
+                    </div>
+                </div>
+            </div>
+
+            <div style="display: none;">
+                {{ regisform.receipt }}
+            </div>
+
+            <!-- //ฟอร์มบุคคลธรรมดา -->
+            <div class="inputdiv" id="indiform" style="display: none;">
+                <label for="#" class="form-label headregisform">ข้อมูลออกใบเสร็จในนามบุคคล</label>
+
+                <div style="background-color: #ddd; padding: 10px; border-radius: 7px;">
+                    <label for="#" class="form-label">ชื่อ</label><span class="starrequire">*</span>
+                    <input class="form-control" type="text" name="indiname" placeholder="ชื่อ" maxlength="200">
+                    
+                    <label for="#" class="form-label">นามสกุล</label><span class="starrequire">*</span>
+                    <input class="form-control" type="text" name="indilastname" placeholder="นามสกุล" maxlength="200">
+                    
+                    <label for="#" class="form-label">หมายเลขบัตรประชาชน</label><span class="starrequire">*</span>
+                    <div class="alert alert-warning" id="inditaxiderror" role="alert">หมายเลขบัตรประชาชนผิดพลาด</div>
+                    <input class="form-control" type="number" name="inditaxid" placeholder="หมายเลขบัตรประชาชน(พิมพ์ติดกัน)" id="inditaxinput">
+
+
+                    <label for="#" class="form-label">ที่อยู่</label><span class="starrequire">*</span>
+                    <input class="form-control" type="text" name="indiaddress" placeholder="ที่อยู่" maxlength="200">
+
+                    <label for="#" class="form-label">จังหวัด</label><span class="starrequire">*</span>
+                    <input class="form-control" type="text" name="indicity" placeholder="จังหวัด" maxlength="200">
+
+                    <label for="#" class="form-label">อำเภอ</label><span class="starrequire">*</span>
+                    <input class="form-control" type="text" name="indistate" placeholder="อำเภอ" maxlength="200">
+
+                    <label for="#" class="form-label">รหัสไปรษณีย์</label><span class="starrequire">*</span>
+                    <input class="form-control" type="number" name="indipostal" placeholder="รหัสไปรษณีย์">
+
+                    <label for="#" class="form-label">ประเทศ</label><span class="starrequire">*</span>
+                    <select class="form-select" id="selectCountry1" name="indicountry">
+                        <option value="">ประเทศ</option>
+                    </select><br>
+
+
+                    <label for="#" class="form-label" style="font-weight: 600;">ที่อยู่สำหรับส่งหนังสือ/เอกสาร</label>
+
+                    <br><label for="#" class="form-label">ที่อยู่</label><span class="starrequire">*</span>
+                    <input class="form-control" type="text" name="indiaddress_send" placeholder="ที่อยู่" maxlength="200">
+
+                    <label for="#" class="form-label">จังหวัด</label><span class="starrequire">*</span>
+                    <input class="form-control" type="text" name="indicity_send" placeholder="จังหวัด" maxlength="200">
+
+                    <label for="#" class="form-label">อำเภอ</label><span class="starrequire">*</span>
+                    <input class="form-control" type="text" name="indistate_send" placeholder="อำเภอ" maxlength="200">
+
+                    <label for="#" class="form-label">รหัสไปรษณีย์</label><span class="starrequire">*</span>
+                    <input class="form-control" type="number" name="indipostal_send" placeholder="รหัสไปรษณีย์">
+
+                    <label for="#" class="form-label">ประเทศ</label><span class="starrequire">*</span>
+                    <select class="form-select" id="selectCountry2" name="indicountry_send">
+                        <option value="">ประเทศ</option>
+                    </select>
+
+                </div>
+
+            </div>
+            <!-- // -->
+            <!-- //ฟอร์มองค์กร -->
+            <div class="inputdiv" id="orgform" style="display: none;">
+                <label for="#" class="form-label headregisform">ข้อมูลออกใบเสร็จในนามองค์กร</label>
+
+                <div style="background-color: #ddd; padding: 10px; border-radius: 7px;">
+
+                    <label for="#" class="form-label">ชื่อองค์กร</label><span class="starrequire">*</span>
+                    <input class="form-control" type="text" name="orgname" placeholder="ชื่อองค์กร" maxlength="200">
+
+                    <label for="#" class="form-label">เลขประจำตัวผู้เสียภาษี</label><span class="starrequire">*</span>
+                    <div class="alert alert-warning" id="orgtaxiderror" role="alert">เลขประจำตัวผู้เสียภาษีผิดพลาด</div>
+                    <input class="form-control" type="number" name="orgtaxid" placeholder="" id="orgtaxidinput">
+
+                    <label for="#" class="form-label">ที่อยู่1</label><span class="starrequire">*</span>
+                    <input class="form-control" type="text" name="orgaddress1" placeholder="ที่อยู่1" maxlength="200">
+
+                    <label for="#" class="form-label">ที่อยู่2</label><span class="starrequire">*</span>
+                    <input class="form-control" type="text" name="orgaddress2" placeholder="ที่อยู่2" maxlength="200">
+
+                    <label for="#" class="form-label">จังหวัด</label><span class="starrequire">*</span>
+                    <input class="form-control" type="text" name="orgcity" placeholder="จังหวัด" maxlength="200">
+
+                    <label for="#" class="form-label">อำเภอ</label><span class="starrequire">*</span>
+                    <input class="form-control" type="text" name="orgstate" placeholder="อำเภอ" maxlength="200">
+
+                    <label for="#" class="form-label">รหัสไปรษณีย์</label><span class="starrequire">*</span>
+                    <input class="form-control" type="number" name="orgpostal" placeholder="รหัสไปรษณีย์">
+
+                    <label for="#" class="form-label">ประเทศ</label><span class="starrequire">*</span>
+                    <select class="form-select" id="selectCountry3" name="orgcountry">
+                        <option value="">ประเทศ</option>
+                    </select><br>
+
+                    
+                    <label for="#" class="form-label" style="font-weight: 600;">ที่อยู่สำหรับส่งหนังสือ/เอกสาร</label>
+
+                    <br><label for="#" class="form-label">ที่อยู่1</label><span class="starrequire">*</span>
+                    <input class="form-control" type="text" name="orgaddress1_send" placeholder="ที่อยู่1" maxlength="200">
+
+                    <label for="#" class="form-label">ที่อยู่2</label><span class="starrequire">*</span>
+                    <input class="form-control" type="text" name="orgaddress2_send" placeholder="ที่อยู่2" maxlength="200">
+
+                    <label for="#" class="form-label">จังหวัด</label><span class="starrequire">*</span>
+                    <input class="form-control" type="text" name="orgcity_send" placeholder="จังหวัด" maxlength="200">
+
+                    <label for="#" class="form-label">อำเภอ</label><span class="starrequire">*</span>
+                    <input class="form-control" type="text" name="orgstate_send" placeholder="อำเภอ" maxlength="200">
+
+                    <label for="#" class="form-label">รหัสไปรษณีย์</label><span class="starrequire">*</span>
+                    <input class="form-control" type="number" name="orgpostal_send" placeholder="รหัสไปรษณีย์">
+
+                    <label for="#" class="form-label">ประเทศ</label><span class="starrequire">*</span>
+                    <select class="form-select" id="selectCountry4" name="orgcountry_send">
+                        <option value="">ประเทศ</option>
+                    </select>
+
+                </div>
+
+            </div>
+            <!-- // -->
+            <script>
+                let select1 = document.getElementById("selectCountry1");
+                let select2 = document.getElementById("selectCountry2");
+                let select3 = document.getElementById("selectCountry3");
+                let select4 = document.getElementById("selectCountry4");
+
+                let countries = new Array("Afghanistan", "Albania", "Algeria", "Andorra", "Angola", "Antarctica", "Antigua and Barbuda", "Argentina", "Armenia", "Australia", "Austria", "Azerbaijan", "Bahamas", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium", "Belize", "Benin", "Bermuda", "Bhutan", "Bolivia", "Bosnia and Herzegovina", "Botswana", "Brazil", "Brunei", "Bulgaria", "Burkina Faso", "Burma", "Burundi", "Cambodia", "Cameroon", "Canada", "Cape Verde", "Central African Republic", "Chad", "Chile", "China", "Colombia", "Comoros", "Congo, Democratic Republic", "Congo, Republic of the", "Costa Rica", "Cote d'Ivoire", "Croatia", "Cuba", "Cyprus", "Czech Republic", "Denmark", "Djibouti", "Dominica", "Dominican Republic", "East Timor", "Ecuador", "Egypt", "El Salvador", "Equatorial Guinea", "Eritrea", "Estonia", "Ethiopia", "Fiji", "Finland", "France", "Gabon", "Gambia", "Georgia", "Germany", "Ghana", "Greece", "Greenland", "Grenada", "Guatemala", "Guinea", "Guinea-Bissau", "Guyana", "Haiti", "Honduras", "Hong Kong", "Hungary", "Iceland", "India", "Indonesia", "Iran", "Iraq", "Ireland", "Israel", "Italy", "Jamaica", "Japan", "Jordan", "Kazakhstan", "Kenya", "Kiribati", "Korea, North", "Korea, South", "Kuwait", "Kyrgyzstan", "Laos", "Latvia", "Lebanon", "Lesotho", "Liberia", "Libya", "Liechtenstein", "Lithuania", "Luxembourg", "Macedonia", "Madagascar", "Malawi", "Malaysia", "Maldives", "Mali", "Malta", "Marshall Islands", "Mauritania", "Mauritius", "Mexico", "Micronesia", "Moldova", "Mongolia", "Morocco", "Monaco", "Mozambique", "Namibia", "Nauru", "Nepal", "Netherlands", "New Zealand", "Nicaragua", "Niger", "Nigeria", "Norway", "Oman", "Pakistan", "Panama", "Papua New Guinea", "Paraguay", "Peru", "Philippines", "Poland", "Portugal", "Qatar", "Romania", "Russia", "Rwanda", "Samoa", "San Marino", " Sao Tome", "Saudi Arabia", "Senegal", "Serbia and Montenegro", "Seychelles", "Sierra Leone", "Singapore", "Slovakia", "Slovenia", "Solomon Islands", "Somalia", "South Africa", "Spain", "Sri Lanka", "Sudan", "Suriname", "Swaziland", "Sweden", "Switzerland", "Syria", "Taiwan", "Tajikistan", "Tanzania", "Thailand", "Togo", "Tonga", "Trinidad and Tobago", "Tunisia", "Turkey", "Turkmenistan", "Uganda", "Ukraine", "United Arab Emirates", "United Kingdom", "United States", "Uruguay", "Uzbekistan", "Vanuatu", "Venezuela", "Vietnam", "Yemen", "Zambia", "Zimbabwe");
+                
+                for (var i = 0; i < countries.length; i++) {
+    
+                    var option = document.createElement("option"); 
+                    //for every turn of the loop create an option tag
+                    //console.log(option);
+                    var txt = document.createTextNode(countries[i]); 
+                    //for every turn of the loop create the inner text
+                    //console.log(txt);
+                    option.appendChild(txt); 
+                    //for every turn of the loop put the words from txt inside the <option> tags
+                    //console.log(option);
+                    option.setAttribute("value",countries[i]); //for every turn of the loop set the value attribute to corresponding country name
+                    //console.log(option);
+                    select1.insertBefore(option,select1.lastChild);
+                    //console.log(select);
+                    
+                }
+                
+                for (var i = 0; i < countries.length; i++) {
+                    
+                    var option = document.createElement("option"); 
+                    //for every turn of the loop create an option tag
+                    //console.log(option);
+                    var txt = document.createTextNode(countries[i]); 
+                    //for every turn of the loop create the inner text
+                    //console.log(txt);
+                    option.appendChild(txt); 
+                    //for every turn of the loop put the words from txt inside the <option> tags
+                    //console.log(option);
+                    option.setAttribute("value",countries[i]); //for every turn of the loop set the value attribute to corresponding country name
+                    //console.log(option);
+                    select2.insertBefore(option,select2.lastChild);
+                    //console.log(select);
+                    
+                }
+
+                for (var i = 0; i < countries.length; i++) {
+                    
+                    var option = document.createElement("option"); 
+                    //for every turn of the loop create an option tag
+                    //console.log(option);
+                    var txt = document.createTextNode(countries[i]); 
+                    //for every turn of the loop create the inner text
+                    //console.log(txt);
+                    option.appendChild(txt); 
+                    //for every turn of the loop put the words from txt inside the <option> tags
+                    //console.log(option);
+                    option.setAttribute("value",countries[i]); //for every turn of the loop set the value attribute to corresponding country name
+                    //console.log(option);
+                    select3.insertBefore(option,select3.lastChild);
+                    //console.log(select);
+                    
+                }
+
+                for (var i = 0; i < countries.length; i++) {
+                    
+                    var option = document.createElement("option"); 
+                    //for every turn of the loop create an option tag
+                    //console.log(option);
+                    var txt = document.createTextNode(countries[i]); 
+                    //for every turn of the loop create the inner text
+                    //console.log(txt);
+                    option.appendChild(txt); 
+                    //for every turn of the loop put the words from txt inside the <option> tags
+                    //console.log(option);
+                    option.setAttribute("value",countries[i]); //for every turn of the loop set the value attribute to corresponding country name
+                    //console.log(option);
+                    select4.insertBefore(option,select4.lastChild);
+                    //console.log(select);
+                    
+                }
+            </script>
+            
+            <div class="inputdiv" id="taxwithgoldingtype">
+                <label for="#" class="form-label headregisform">ท่านต้องการหักภาษี ฌ ที่จ่ายหรือไม่</label><span class="starrequire">*</span>
+
+                <div style="display: flex; flex-direction: column;">
+                    <div class="radiolabeldiv">
+                        <input type="radio" name="taxwithholding" required value="ไม่หักภาษี ณ ที่จ่าย" id="notax">
+                        <label for="#" class="form-label" id="notaxlabel">ไม่หักภาษี ณ ที่จ่าย</label>
+                    </div>
+
+                    <div class="radiolabeldiv">
+                        <input type="radio" name="taxwithholding" required value="WHT">
+                        <label for="#" class="form-label">WHT</label>
+                    </div>
+
+                    <div class="radiolabeldiv">
+                        <input type="radio" name="taxwithholding" required value="eWHT">
+                        <label for="#" class="form-label">eWHT</label>
+                    </div>
+                </div>
+                
+            </div>
+
+            <div class="inputdiv">
+                <label for="#" class="form-label headregisform">เลือกประเภทการสมัคร</label><span class="starrequire">*</span>
+
+                <div style="display: flex; flex-direction: column;">
+                    <div class="radiolabeldiv">
+                        <input type="radio" name="acctype" required value="บุคคลทั่วไป" onchange="showevidenceform('')">
+                        <label for="#" class="form-label">บุคคลทั่วไป</label>
+                    </div>
+
+                    <div class="radiolabeldiv">
+                        <input type="radio" name="acctype" required value="สมาชิกสมาคม" id="member" onchange="showevidenceform('กรุณาอัปโหลดหลักฐานการเป็นสมาชิกสมาคม')">
+                        <label for="#" class="form-label">สมาชิกสมาคม</label>
+                    </div>
+
+                    <div class="radiolabeldiv">
+                        <input type="radio" name="acctype" required value="นิสิต/นักศึกษา" id="student" onchange="showevidenceform('กรุณาอัปโหลดหลักฐานการเป็นนิสิต/นักศึกษา')">
+                        <label for="#" class="form-label">นิสิต/นักศึกษา</label>
+                    </div>
+                </div>
+                
+            </div>
+
+            <div class="inputdiv">
+                <label for="#" class="form-label headregisform">เลือกช่องทางการชำระเงิน</label><span class="starrequire">*</span>
+
+                <div style="display: flex; flex-direction: column;">
+                    <div class="radiolabeldiv">
+                        <input type="radio" name="paymenttype_cover" required value="ชำระด้วย'เงินโอน'" id="usetransfer" onchange="showvoucherform()">
+                        <label for="#" class="form-label">ชำระด้วย'เงินโอน'</label>
+                    </div>
+
+                    <div class="radiolabeldiv">
+                        <input type="radio" name="paymenttype_cover" required value="ชำระด้วย'บัตรเครดิต'" id="usecredit" onchange="showvoucherform()">
+                        <label for="#" class="form-label">ชำระด้วย'บัตรเครดิต'</label>
+                    </div>
+
+                    <div class="radiolabeldiv">
+                        <input type="radio" name="paymenttype_cover" required value="ใช้ Voucher" id="usevoucher" onchange="showvoucherform()">
+                        <label for="#" class="form-label">ใช้ Voucher</label>
+                    </div>
+                </div>
+
+                <div style="display: none;">
+                    {{ regisform.paymenttype }}
+                </div>
+                
+            </div>
+
+            <!-- // -->
+
+            <div class="inputdiv" id="typevoucherform" style="display: none;">
+                <label for="#" class="form-label headregisform">เลือกช่องทางการชำระ Voucher</label><span class="starrequire">*</span>
+
+                <div style="display: flex; flex-direction: column;">
+                    <div class="radiolabeldiv">
+                        <input type="radio" name="paywithvoucher_cover" value="ชำระด้วย'บัตรเครดิต'" id="payvouchercredit" onchange="paywithVoucherProgramatic()">
+                        <label for="#" class="form-label">ชำระด้วย'เงินโอน'</label>
+                    </div>
+
+                    <div class="radiolabeldiv">
+                        <input type="radio" name="paywithvoucher_cover" value="ชำระด้วย'เงินโอน'" id="payouchertransfer" onchange="paywithVoucherProgramatic()">
+                        <label for="#" class="form-label">ชำระด้วย'บัตรเครดิต'</label>
+                    </div>
+
+                    <div class="radiolabeldiv" style="display: none;">
+                        <input type="radio" name="paywithvoucher_cover" id="hiddentypevoucher" value="">
+                        <label for="#" class="form-label"></label>
+                    </div>
+
+                </div>
+                
+                <div style="display: none;">
+                    {{ regisform.paywithvoucher }}
+                </div>    
+            </div>
+    
+            <div class="inputdiv" id="evidencevoucherform" style="display: none;">
+                <label for="#" class="form-label headregisform">กรุณาอัปโหลดหลักฐานการใช้ Voucher</label><span class="starrequire">*</span>
+                
+                <div>
+                    <input type="file" onchange="readURL2(this)" accept="image/png, image/jpeg" name="imagevoucherevidence">
+                    <img id="img-preview2" src="https://ami-sni.com/wp-content/themes/consultix/images/no-image-found-360x250.png" width="250px">
+                </div>
+            </div>
+
+            <div class="inputdiv" id="evidenceform" style="display: none;">
+                <label for="#" class="form-label headregisform" id="evidencehead"></label><span class="starrequire">*</span>
+                
+                <div>
+                    <input type="file" onchange="readURL1(this)" accept="image/png, image/jpeg" name="imageevidence">
+                    <img id="img-preview1" src="https://ami-sni.com/wp-content/themes/consultix/images/no-image-found-360x250.png" width="250px">
+                </div>
+            </div>
+
+            <script>
+                let noimage = "https://ami-sni.com/wp-content/themes/consultix/images/no-image-found-360x250.png";
+
+                function readURL2(input) {
+                    console.log(input.files);
+                    if (input.files && input.files[0]) {
+                        let reader = new FileReader();
+                        reader.onload = function (e) {
+                        $("#img-preview2").attr("src", e.target.result);
+                        };
+
+                        reader.readAsDataURL(input.files[0]);
+                    } else {
+                        $("#img-preview2").attr("src", noimage);
+                    }
+                }
+
+                function readURL1(input) {
+                    console.log(input.files);
+                    if (input.files && input.files[0]) {
+                        let reader = new FileReader();
+                        reader.onload = function (e) {
+                        $("#img-preview1").attr("src", e.target.result);
+                        };
+
+                        reader.readAsDataURL(input.files[0]);
+                    } else {
+                        $("#img-preview1").attr("src", noimage);
+                    }
+                }
+            </script>
+
+            <!-- // -->
+
+            <div style="margin-top: 50px;">
+                <h4 style="font-weight: 600;">รายละเอียดการและช่องทางการชำระค่าธรรมเนียมและเงื่อนไข</h4>
+
+
+                <p>สถานที่จัดอบรม : ไม่ต้องเดินทางมาที่ศูนย์ฝึกอบรม หรือ โรงแรม</p>
+
+                <p style="font-weight: 600;">
+                    ** อบรมแบบ Remote Classroom (ห้องเรียน Virtual Classroom ด้วยโปรแกรม ZOOM) **
+                </p><br><br>
+
+                <p style="font-weight: 600;">ขั้นตอน “ในวันอบรม”</p>
+
+                <ol>
+                    <li>ผู้เข้าอบรม กดเข้าร่วมการอบรมผ่าน Link การเข้าอบรม (เจ้าหน้าที่จัดส่งให้ทาง Email ก่อนถึงวันอบรม 2-5 วัน)</li>
+                    <li>ตั้ง Screen Name เป็นชื่อภาษาไทยและหมายเลขบัตรประชาชน 4 หลักสุดท้าย ในการเข้าห้องอบรม</li>
+                    <li>“เปิด” กล้อง และ “ปิด” ไมโครโฟนตลอดเวลาของการอบรม (ในระหว่างการอบรม)</li>
+                    <li>ลงทะเบียนใน Google Forms ที่เจ้าหน้าที่จะส่งให้ผ่านกระดานสนทนาของ Zoom หรือ Microsoft Teams) ทุกวัน</li>
+                </ol>
+                <p>  
+                    ลงทะเบียนเข้าอบรมช่วงเช้า 08.00 น.- 08.30 น. เริ่มอบรมเวลา 8.30 น.– 12.30 น.<br>
+                    ลงทะเบียนจบการอบรมช่วงเช้า 12.30 น.-13.00 น.<br>
+                    ลงทะเบียนช่วงบ่าย 13.00 น.- 13.30 น. เริ่มอบรมเวลา 13.30 น.– 17.30 น.<br>
+                </p>
+
+                <p style="font-weight: 600;">หมายเหตุ</p>
+
+                <ul>
+                    <li>การกรอกแบบฟอร์มไม่ถือเป็นการสำรองที่นั่งอบรม</li>
+                    <li>ที่นั่งจะได้รับการยืนยันเมื่อเจ้าหน้าที่ได้ตรวจสอบหลักฐานแล้วเท่านั้น</li>
+                    <li>เพื่อมิให้เสียสิทธิ์ผู้อื่น บริษัทฯ ขอสงวนสิทธิ์ไม่คืนค่าธรรมเนียม</li>
+                    <li>บริษัทฯ ยึดข้อมูลที่ท่านให้ไว้ในการออกใบเสร็จรับเงิน/ใบกำกับภาษี เป็นข้อมูลที่ถูกต้อง หากท่านต้องการแก้ไขข้อมูลหลังจากที่ออกใบเสร็จรับเงิน/ใบกำกับภาษีไปแล้ว จะมีค่าธรรมเนียมในการแก้ไข ใบละ 150 บาท</li>
+                    <li>กรณีต้องการเลื่อนการอบรมหลักสูตรอบรมจะสามารถเลื่อนได้เฉพาะในหลักสูตรเดียวกันและมีการชำระค่าธรรมเนียมเลื่อนอบรมมาแล้วเท่านั้น</li>
+                </ul><br><br>
+
+                <p style="font-weight: 600;">
+                    ค่าธรรมเนียมในการเลื่อนรอบหลักสูตรอบรมการวางแผนการเงิน CFP®
+                </p>
+
+                <ul>
+                    <li>แจ้งเลื่อนก่อนการอบรมวันแรกพร้อมชำระเงินมากกว่า 30 วัน ชำระค่าใช้จ่าย 500 บาท</li>
+                    <li>แจ้งโอนสิทธิ์ก่อนการอบรมวันแรกพร้อมชำระเงิน 15-30 วัน ชำระค่าใช้จ่าย 1,500 บาท</li>
+                    <li>แจ้งโอนสิทธิ์ก่อนการอบรมวันแรกพร้อมชำระเงิน 8-14 วัน ชำระค่าใช้จ่าย 3,000 บาท</li>
+                    <li>แจ้งโอนสิทธิ์ก่อนการอบรมวันแรกพร้อมชำระเงิน 3-7 วัน ชำระค่าใช้จ่าย 5,000 บาท</li>
+                    <li>แจ้งโอนสิทธิ์ก่อนการอบรมน้อยกว่า 3 วัน ไม่สามารถเลื่อนรอบได้</li>
+                    <li>(ยกเว้นกรณีที่มีใบรับรองแพทย์ จะต้องชำระค่าใช้จ่าย 5,000 บาท และชำระก่อนวันเข้าอบรม 3 วัน)</li>
+                    <p>หมายเหตุ: ทั้งนี้ การเลื่อนรอบสามารถเลื่อนได้สูงสุด 1 ครั้ง หลังจากนั้น ไม่อนุญาตให้เลื่อนไม่ว่ากรณีใดๆ ทั้งสิ้น อนึ่ง การเลื่อนรอบไม่สามารถเลื่อนรอบข้ามหลักสูตร หรือเปลี่ยนเป็นหลักสูตรอื่นได้ และไม่สามารถเลื่อนรอบข้ามปีได้</p>
+                </ul><br><br>
+
+                <p style="font-weight: 600;">
+                    เงื่อนไขการใช้สิทธิ์อบรมซ้ำ หลักสูตรอบรมการวางแผนการเงิน CFP®
+                </p>
+
+                <ul>
+                    <li>ต้องเป็นผู้เข้าอบรมที่มาอบรมครบตามเวลา</li>
+                    <li>รอบที่ต้องการอบรมซ้ำต้องมีระยะห่างจากการอบรมครั้งแรกไม่เกิน 2 ปี ก่อนวันอบรมครั้งใหม่</li>
+                    <li>ต้องสามารถแสดงหลักฐานว่าสอบไม่ผ่าน ภายใน 6 เดือน ก่อนวันที่จะอบรมครั้งใหม่</li>
+                    <li>ผลสอบ 1 ครั้งใช้ได้สำหรับการอบรมซ้ำได้ 1 ครั้ง</li>
+                    <li>ต้องลงทะเบียน พร้อมชำระค่าห้องอบรม ก่อนการอบรมอย่างน้อย 4 วัน ก่อนถึงวันอบรมวันแรก (ค่าห้องอบรมวันละ 856 บาท * 6 วัน = 5,136 บาท)
+                    <li>ชำระค่าเอกสารประกอบการสอน จำนวน 535 บาท (รวมภาษีมูลค่าเพิ่ม 7% แล้ว)</li>
+                    <li>กรณีผู้เข้าอบรม ขอเข้าอบรมซ้ำแล้วไม่มาเข้าอบรมหรือมาอบรมไม่ครบตามกำหนด CMSK ขอสงวนสิทธิ์ในการเข้ารับการอบรมซ้ำในครั้งถัดไป
+                    <li>ผู้เข้าอบรมไม่สามารถโอนสิทธิ์การอบรมซ้ำให้กับบุคคลอื่นได้</li>
+                    <li>สถาบันฯ ขอสงวนสิทธิ์ เปลี่ยนแปลงค่าธรรมเนียมตามความเหมาะสม</li>
+                </ul><br><br>
+
+                <p style="font-weight: 600;">
+                    ช่องทางการติดต่อ
+                </p>
+
+                <p>
+                    โทรศัพท์ 064-8236093, 094-2166896<br>
+
+                    Line ID: @cmsk<br>
+
+                    E-mail: training@cmsk.co.th<br>
+                </p> 
+
+
+                <p>
+                    ก่อนวันอบรม 2-5 วัน CMSK จะส่งรายละเอียดพร้อม กำหนดการเข้าอบรม แจ้งให้ทราบทาง อีเมล์ อีกครั้งค่ะ ขอบพระคุณค่ะ<br><br>
+
+                    บริษัท ซีเอ็มเอสเค จำกัด (ฝ่ายบัญชี) 126/103 อาคารซี.เอ็ม.ทาวเวอร์ ชั้น 26 ถ.กรุงธนบุรี แขวงบางลำภูล่าง เขตคลองสาน กรุงเทพฯ 10600 เท่านั้น<br><br>
+
+                    ** ทั้งนี้ระบบของการสมัครจะคิดราคาที่ต้องชำระโดยอัตโนมัติ<br>
+                </p>
+
+            </div>
+
+            <div style="border-top: #ddd 1px solid; padding-top: 20px;">
+                <label for="#" class="form-label headregisform" style="font-size: 16px;">
+                    ข้าพเจ้า ในฐานะเจ้าของข้อมูลส่วนบุคคล ยินยอมให้ข้อมูลเพื่อประกอบการสั่งซื้อให้แก่ CMSK ข้าพเจ้าขอรับรองว่าข้อมูลข้างต้นเป็นจริงทุกประการ
+                </label>
+                <label for="#" class="form-label headregisform" style="font-size: 16px;">บริษัทฯจะไม่เปิดเผยข้อมูลส่วนบุคคลของลูกค้าให้แก่บุคคลอื่น เว้นแต่เป็นการเปิดเผยเพื่อการปฏิบัติตามกฎหมายที่บริษัทฯมีหน้าที่ต้องปฏิบัติตามอย่างเคร่งครัด</label><span class="starrequire">*</span>
+
+                <div style="display: flex; flex-direction: column;">
+                    <div class="radiolabeldiv">                   
+                        <input type="radio" name="acceptall" required value="True" id="student" onchange="showevidenceform('กรุณาอัปโหลดหลักฐานการเป็นนิสิต/นักศึกษา')">
+                        <label for="#" class="form-label">ยินยอม</label>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="border-top: #ddd 1px solid; padding-top: 20px;">
+                <button type="submit" class="btn btn-primary mb-3 submitbtn">ชำระเงิน</button>
+            </div>
+            
+        </form>
+
+    </div>
+    
+</section>
+
+<script>
+    // CHANGE FORM
+    function displayoldaccform() {
+        if (document.querySelector('#haveoldacc').checked) {
+            document.querySelector('#oldaccform').style.display = "block"
+            $("#oldaccform :input").prop("required", true);
+        } else {
+            document.querySelector('#oldaccform').style.display = "none"
+            $("#oldaccform :input").prop("required", false);
+            $('#oldaccform :input').val('');
+        }
+    }
+
+    document.querySelector('#notax').style.display = "none"
+    document.querySelector('#notaxlabel').style.display = "none"
+    document.querySelector('#taxwithgoldingtype').style.display = "none"
+    function switchreceiptform() {
+        if (document.querySelector('#indicheck').checked) {
+
+            // programatic check tax no tax
+            document.querySelector('#notax').checked = true
+            document.querySelector('#taxwithgoldingtype').style.display = "none"
+
+            // programatic check
+            document.querySelector('#id_receipt_0').checked = true
+            document.querySelector('#id_receipt_1').checked = false
+
+            document.querySelector('#indiform').style.display = "block"
+            $("#indiform :input").prop("required", true);
+
+            document.querySelector('#orgform').style.display = "none"
+            $("#orgform :input").prop("required", false);
+            $('#orgform :input').val('');
+            $('#orgtaxidinput').val(0);
+
+        } else if (document.querySelector('#orgcheck').checked) {
+
+            // programatic check tax no tax
+            document.querySelector('#notax').checked = false
+            document.querySelector('#taxwithgoldingtype').style.display = "block"
+
+            // programatic check
+            document.querySelector('#id_receipt_1').checked = true
+            document.querySelector('#id_receipt_0').checked = false
+
+            document.querySelector('#orgform').style.display = "block"
+            $("#orgform :input").prop("required", true);
+
+            document.querySelector('#indiform').style.display = "none"
+            $("#indiform :input").prop("required", false);
+            $('#indiform :input').val('');
+            $('#inditaxinput').val(0);
+        }
+    }
+
+    function showevidenceform(text) {
+        if (document.querySelector('#member').checked || document.querySelector('#student').checked) {
+            document.querySelector('#evidenceform').style.display = "block"
+            document.querySelector('#evidencehead').innerHTML = text
+            $("#evidenceform :input").prop("required", true);
+        } else {
+            document.querySelector('#evidenceform').style.display = "none"
+            $("#evidenceform :input").prop("required", false);
+            $('#evidenceform :input').val(null);
+        }
+    }
+
+    djangoformPaytype0 = document.querySelector('#id_paymenttype_0')
+    djangoformPaytype1 = document.querySelector('#id_paymenttype_1')
+    djangoformPaytype2 = document.querySelector('#id_paymenttype_2')
+    function paymentProgramatic() {
+        if (document.querySelector('#usetransfer').checked) {
+            // programatic check
+            djangoformPaytype0.checked = true
+            djangoformPaytype1.checked = false
+            djangoformPaytype2.checked = false
+
+        } else if (document.querySelector('#usecredit').checked) {
+            // programatic check
+            djangoformPaytype1.checked = true
+            djangoformPaytype0.checked = false
+            djangoformPaytype2.checked = false
+
+        } else if (document.querySelector('#usevoucher').checked) {
+            // programatic check
+            djangoformPaytype2.checked = true
+            djangoformPaytype1.checked = false
+            djangoformPaytype0.checked = false
+
+        }
+    }
+
+    function showvoucherform() {
+
+        paymentProgramatic()
+
+        if (document.querySelector('#usevoucher').checked) {
+            document.querySelector('#hiddentypevoucher').checked = false
+
+            document.querySelector('#typevoucherform').style.display = "block"
+            $("#typevoucherform :input").prop("required", true);
+
+            document.querySelector('#evidencevoucherform').style.display = "block"
+            $("#evidencevoucherform :input").prop("required", true); 
+
+        } else {
+            document.querySelector('#typevoucherform').style.display = "none"
+            $("#typevoucherform :input").prop("required", false);
+            $('#typevoucherform :input').val('');
+
+            document.querySelector('#evidencevoucherform').style.display = "none"
+            $("#evidencevoucherform :input").prop("required", false);
+            $('#evidencevoucherform :input').val('');  
+                        
+            document.querySelector('#hiddentypevoucher').checked = true
+            document.querySelector('#id_paywithvoucher_2').checked = true
+        }
+    }
+
+    djangoformpayVoucher0 = document.querySelector('#id_paywithvoucher_0')
+    djangoformpayVouche1 = document.querySelector('#id_paywithvoucher_1')
+    djangoformpayVouche2 = document.querySelector('#id_paywithvoucher_2')
+
+    djangoformpayVouche2.checked = true
+    function paywithVoucherProgramatic() {
+
+        if (document.querySelector('#payvouchercredit').checked) {
+
+            document.querySelector('#payvouchercredit').checked = true
+            djangoformpayVoucher0.checked = true
+            djangoformpayVouche1.checked = false
+            djangoformpayVouche2.checked = false
+        } else if (document.querySelector('#payouchertransfer').checked) {
+
+            document.querySelector('#payouchertransfer').checked = true
+            djangoformpayVouche1.checked = true
+            djangoformpayVoucher0.checked = false
+            djangoformpayVouche2.checked = false
+        } else {
+            djangoformpayVouche2.checked = true
+            djangoformpayVoucher0.checked = false
+            djangoformpayVouche1.checked = false
+        }
+    }
+
+    // CHECK TAXID LENGTH
+    inditaxid = document.querySelector('#inditaxinput')
+    alertinditaxid = document.querySelector('#inditaxiderror')
+    alertinditaxid.style.display = "none"
+    document.querySelector('#inditaxinput').addEventListener('change', () => {
+        if (inditaxid.value.length !== 13) {
+            console.log('error')
+            alertinditaxid.style.display = "block"
+        } else {
+            alertinditaxid.style.display = "none"
+        }
+    })
+
+    orgtaxid = document.querySelector('#orgtaxidinput')
+    alertorgtaxid = document.querySelector('#orgtaxiderror')
+    alertorgtaxid.style.display = "none"
+    document.querySelector('#orgtaxidinput').addEventListener('change', () => {
+        if (orgtaxid.value.length !== 13) {
+            console.log('error')
+            alertorgtaxid.style.display = "block"
+        } else {
+            alertorgtaxid.style.display = "none"
+        }
+    })
+
+    
+
+</script>
+
+{% endblock %}

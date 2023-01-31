@@ -1,0 +1,45 @@
+{% extends 'app_general/components/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<section class="signinsec">
+    <div class="signindiv">
+
+        <div class="alert alert-warning" role="alert" id="alertsignin"></div>
+
+        <form class="row g-3" action="{% url 'signin' %}" onsubmit="return validateSigninForm()" method="post" name="mysignin" id="signin">
+            {% csrf_token %}
+            <span>ชื่อผู้ใช้</span>
+            <input class="form-control" type="text" placeholder="ชื่อผู้ใช้" aria-label="default input example" name="signinusername">
+            
+            <span>รหัส</span>
+            <input class="form-control" type="password" placeholder="รหัส" aria-label="default input example" name="signinpassword">
+            
+            <button type="submit" class="btn btn-primary mb-3 submitbtn">ลงชื่อเข้าใช้</button>
+        </form>
+    </div>
+</section>
+
+<script>
+    const alertdiv = document.querySelector('#alertsignin')
+    
+    alertdiv.style.display = "none"
+
+    function validateSigninForm() {
+        let signinname = document.forms["mysignin"]["signinname"].value;
+        let signinpass = document.forms["mysignin"]["signinpass"].value;
+        
+        if (signinname === "" || signinpass === "") {
+
+            alertdiv.style.display = "block"
+            alertdiv.innerHTML = "คุณยังไม่ได้เติมตัวอักษร"
+
+            return false;
+        } else {
+            return true
+        }
+
+    }
+</script>
+{% endblock %}

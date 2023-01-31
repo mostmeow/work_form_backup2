@@ -1,0 +1,208 @@
+/* CUSTOM FONTS */
+@font-face {
+    font-family: 'NotoSansThai-Regular';
+    font-weight: 400;
+    src: local('NotoSansThai-Regular'), 
+        url('../fonts/NotoSansThai/NotoSansThai-Regular.ttf') format("truetype");
+}
+
+:root {
+    /* color */
+    --shade1: #03A580;
+    --shade2: #005B30;
+    --shade3: #FE4C1C;
+    --shade4: #E5EAED;
+    
+
+    --white: #ffffff;
+    --grey: #ddd;
+}
+
+html {
+    font-family: 'NotoSansThai-Regular', sans-serif !important;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    background-color: white;
+    color: white;
+}
+a, p, h1, h2, h3, h4 {
+    -webkit-user-select: none !important;  /* Chrome all / Safari all */
+    -moz-user-select: none !important;     /* Firefox all */
+    -ms-user-select: none !important;      /* IE 10+ */
+    user-select: none !important;          /* Likely future */      
+}
+
+body {
+    font-family: 'NotoSansThai-Regular', sans-serif !important;
+}
+code, kbd, pre, samp {
+    font-family: 'NotoSansThai-Regular', sans-serif !important;
+}
+button, input, optgroup, select, textarea {
+    font-family: inherit
+}
+.tooltip {
+    font-family: 'NotoSansThai-Regular', sans-serif !important;
+}
+.popover {
+    font-family: 'NotoSansThai-Regular', sans-serif !important;
+}
+.text-monospace {
+    font-family: 'NotoSansThai-Regular', sans-serif !important;
+}
+
+i {
+    font-family: 'bootstrap-icons' !important;
+}
+
+.firsticon {
+    font-size: var(--normalbtn);
+    color: var(--shade1);
+}
+
+
+
+
+/* ---------- */
+
+/* MAIN */
+.bodysec {
+
+}
+/* 
+CUSTOM INPUT FILE */
+[type="file"] {
+/* Style the color of the message that says 'No file chosen' */
+  color: #878787;
+}
+[type="file"]::-webkit-file-upload-button {
+  background: var(--shade1);
+  border: 2px solid var(--shade1);
+  border-radius: 4px;
+  color: var(--white);
+  cursor: pointer;
+  font-size: 12px;
+  outline: none;
+  padding: 10px 25px;
+  text-transform: uppercase;
+  transition: all 0.3s ease;
+}
+
+[type="file"]::-webkit-file-upload-button:hover {
+  background: var(--white);
+  border: 2px solid var(--shade1);
+  color: var(--shade1);
+}
+
+/* ALLCOURSE PAGE */
+.maincoursesec {
+    display: grid;
+    justify-content: center;
+    align-items: center;
+}
+.maincoursediv {
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+.coursecard {
+    overflow: hidden;
+    border: none;
+    margin: 10px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+}
+
+/* CLASSROOM PAGE */
+.classroomsec {
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+.classroomdiv {
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+
+/* REGISTERPAGE */
+.regissec {
+    display: grid;
+    width: 100%;
+    padding-left: 10vw;
+    padding-right: 10vw;
+    justify-content: center;
+    align-items: center;
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+
+#headbar {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    height: 100px;
+    vertical-align: middle;
+    background-color: var(--shade4);
+}
+
+.logoimg {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100px;
+    height: 100px;
+    object-fit: contain;
+}
+
+.headregisform {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.regisdiv {
+    width: 60vw;
+    margin-top: 50px;
+}
+.starrequire {
+    color: red;
+}
+.inputdiv {
+    margin-bottom: 20px;
+}
+
+.radiolabeldiv {
+    display: inline-block;
+    justify-content: center;
+    align-items: center;
+}
+
+/* SIGNINPAGE */
+.signinsec {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.signindiv {
+    width: 60vw;
+    padding: 20px;
+    overflow: hidden;
+}
+.signin {
+    width: 100%;
+}
+
+/* SIGNUP */
+.signupsec {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.signupdiv {
+    width: 60vw;
+    padding: 20px;
+    overflow: hidden;
+}
+.signup {
+    width: 100%;
+}

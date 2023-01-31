@@ -1,0 +1,10 @@
+.submitbtn {
+    background-color: var(--shade1) !important;
+    border: var(--grey) !important;
+    color: var(--white);
+}
+.submitbtn:hover, .submitbtn:active {
+    background-color: var(--shade2) !important;
+    border: var(--shade1) !important;
+    color: white;
+}

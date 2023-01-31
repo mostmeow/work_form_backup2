@@ -1,0 +1,15 @@
+{% extends 'app_general/components/base.html' %}
+{% load static %}
+
+{% block title %}
+{% endblock %}
+
+{% block content %}
+<section>
+    <p>ชำระ เงินโอนvoucher</p>
+    <p>regisid: {{ regidis }}</p>
+    <p>price: {{ price|floatformat:'g' }}</p>
+    <p>vat 7%: {{ vat|floatformat:'g' }}</p>
+    <p>allprice: {{ allprice|floatformat:'g' }}</p>
+</section>
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends 'app_general/components/base.html' %}
+{% load static %}
+
+{% block title %}
+{% endblock %}
+
+{% block content %}
+<section class="maincoursesec">
+
+    <div class="maincoursediv">
+        {% for course in allcourse %}
+            <div class="card coursecard" style="width: 18rem;">
+                <img src="{% static 'app_general/assets/pic/dummy.jpg' %}" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">{{ course.name }}</h5>
+                    <p class="card-text">คอร์สเรียนการเงิน</p>
+                    <a href="{% url 'classroom' course.id %}" class="btn btn-primary submitbtn">สมัครเรียน</a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    
+</section>
+{% endblock %}

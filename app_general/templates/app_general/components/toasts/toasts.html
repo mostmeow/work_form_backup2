@@ -1,0 +1,65 @@
+{% if messages %}
+{% for message in messages %}
+
+    <!-- CHECK MESSAGE TAG -->
+    {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+        <div id="successToast" class="toast align-items-center text-bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body">
+                    {{ message }}
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>
+    {% elif message.level == 50 %}
+        <div class="lottiesignup">
+            <lottie-player id="lottieanim" src="https://assets2.lottiefiles.com/packages/lf20_lk80fpsm.json" background="transparent"  speed="1"  style="width: 300px; height: 300px;" autoplay></lottie-player>
+        </div>
+        <style>
+            .lottiesignup {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+        </style>
+        <script>
+            setTimeout(() => {
+                document.querySelector('.lottiesignup').style.display = "none"
+            }, 2000);
+        </script>
+    {% elif message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+        <div id="successToast" class="toast align-items-center text-bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body">
+                    {{ message }}
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>
+    {% elif message.level == DEFAULT_MESSAGE_LEVELS.WARNING %}
+        <div id="successToast" class="toast align-items-center text-bg-warning border-0" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body">
+                    {{ message }}
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>
+    {% endif %}
+
+    <style>
+        #successToast {
+            z-index: 100;
+            position: fixed;
+            top: 100px;
+            left: 50%;
+            transform: translate(-50%, 0);
+        }
+    </style>
+
+{% endfor %}
+{% endif %}

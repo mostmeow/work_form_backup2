@@ -1,0 +1,112 @@
+{% extends 'app_general/components/base.html' %}
+{% load static %}
+
+{% block content %}
+
+<section class="signupsec">
+    <div class="signupdiv">
+        {{ regisid }}
+        <div class="alert alert-warning" role="alert" id="alertsignup"></div>
+        
+        <form class="row g-3" action="{% url 'signup' regisid %}" onsubmit="return validateSignupForm()" method="post" name="mysignup" id="signup">
+            {% csrf_token %}
+            <span>ชื่อผู้ใช้</span>
+            <input class="form-control" type="text" placeholder="ชื่อผู้ใช้" aria-label="default input example" name="signupname">
+            
+            <span>รหัส</span>
+            <input class="form-control" type="password" placeholder="รหัส" aria-label="default input example" name="signuppass">
+            
+            <button type="submit" class="btn btn-primary mb-3 submitbtn" id="submitsignup">สมัคร</button>
+        </form>
+
+    </div>
+
+    <div id="spinner">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+
+</section>
+
+<script>
+    const alertdiv = document.querySelector('#alertsignup')
+    
+    alertdiv.style.display = "none"
+
+    function validateSignupForm() {
+        let signupname = document.forms["mysignup"]["signupname"].value;
+        let signuppass = document.forms["mysignup"]["signuppass"].value;
+        
+        if (signupname == "" || signuppass == "") {
+
+            alertdiv.style.display = "block"
+            alertdiv.innerHTML = "กรุณาเติมช่องว่าง"
+
+            return false;
+        } else if (signuppass.length < 8) {
+            alertdiv.style.display = "block"
+            alertdiv.innerHTML = "รหัสมากกว่า 8 ตัว"
+
+            return false;
+        } else {
+            Sendtoview();
+            return true;
+        }
+    }
+
+    // $('#spinner').hide();
+
+    // jQuery(function($) {
+        
+    //     $(document).ajaxSend(function() {
+
+    //         if (validateSignupForm === true) {
+    //             $("#spinner").fadeIn(500);
+    //         }
+
+    //     });
+
+    //     $('#submitsignup').click(function () {
+    //         $.ajax({
+    //             type: 'GET',
+    //             success: function(data) {
+    //                 var d = $.parseJSON(data);
+    //                 alert(d.Test);
+    //             }
+    //         }).done(function() {
+    //             setTimeout(function() {
+    //                 $("#spinner").fadeOut(500);
+    //             }, 700);
+    //         })
+    //     })
+
+    // })
+
+    document.querySelector('#spinner').style.display = "none"
+
+    function Sendtoview() {
+
+        document.querySelector('#spinner').style.display = "grid"
+
+        var url = ''
+        fetch(url, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Success:', data)
+            document.querySelector('#spinner').style.display = "none"
+        })
+        .catch((error) => {
+            console.error('Error:', error)
+        })
+
+    }
+
+</script>
+
+{% endblock %}
