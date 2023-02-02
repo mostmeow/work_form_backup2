@@ -109,6 +109,11 @@ RECEIPTTYPE = [
     ('นามบุคคล', 'นามบุคคล'),
     ('นามองค์กร', 'นามองค์กร'),
 ]
+ACCTYPE = [
+    ('บุคคลทั่วไป', 'บุคคลทั่วไป'),
+    ('สมาชิกสมาคม', 'สมาชิกสมาคม'),
+    ('นิสิต/นักศึกษา', 'นิสิต/นักศึกษา'),
+]
 PAYMENTTYPE = [
     ("เงินโอน", "ชำระด้วย'เงินโอน'"),
     ("บัตรเครดิต", "ชำระด้วย'บัตรเครดิต'"),
@@ -174,7 +179,7 @@ class RegisterModel(models.Model):
     #
     taxwithholding = models.CharField(max_length=200, blank=True, null=True)
     
-    acctype = models.CharField(max_length=200, blank=True, null=True)
+    acctype = models.CharField(choices=ACCTYPE, max_length=200, blank=True, null=True)
     imageevidence = models.ImageField(blank=True, null=True, upload_to='imageevidence/')
     imageevidence_data = models.BinaryField(blank=True, null=True)
 

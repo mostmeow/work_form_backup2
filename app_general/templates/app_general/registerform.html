@@ -388,20 +388,24 @@
 
                 <div style="display: flex; flex-direction: column;">
                     <div class="radiolabeldiv">
-                        <input type="radio" name="acctype" required value="บุคคลทั่วไป" onchange="showevidenceform('')">
+                        <input type="radio" name="acctype_cover" required value="บุคคลทั่วไป" id="normal" onchange="showevidenceform('')">
                         <label for="#" class="form-label">บุคคลทั่วไป</label>
                     </div>
 
                     <div class="radiolabeldiv">
-                        <input type="radio" name="acctype" required value="สมาชิกสมาคม" id="member" onchange="showevidenceform('กรุณาอัปโหลดหลักฐานการเป็นสมาชิกสมาคม')">
+                        <input type="radio" name="acctype_cover" required value="สมาชิกสมาคม" id="member" onchange="showevidenceform('กรุณาอัปโหลดหลักฐานการเป็นสมาชิกสมาคม')">
                         <label for="#" class="form-label">สมาชิกสมาคม</label>
                     </div>
 
                     <div class="radiolabeldiv">
-                        <input type="radio" name="acctype" required value="นิสิต/นักศึกษา" id="student" onchange="showevidenceform('กรุณาอัปโหลดหลักฐานการเป็นนิสิต/นักศึกษา')">
+                        <input type="radio" name="acctype_cover" required value="นิสิต/นักศึกษา" id="student" onchange="showevidenceform('กรุณาอัปโหลดหลักฐานการเป็นนิสิต/นักศึกษา')">
                         <label for="#" class="form-label">นิสิต/นักศึกษา</label>
                     </div>
                 </div>
+
+                <div style="display: none;">
+                    {{ regisform.acctype }}
+                </div> 
                 
             </div>
 
@@ -678,15 +682,30 @@
     }
 
     function showevidenceform(text) {
+        // programatic 
+        if (document.querySelector('#normal').checked) {
+            document.querySelector('#id_acctype_0').checked = true
+            document.querySelector('#id_acctype_1').checked = false
+            document.querySelector('#id_acctype_2').checked = false
+        } else if (document.querySelector('#member').checked) {
+            document.querySelector('#id_acctype_1').checked = true
+            document.querySelector('#id_acctype_0').checked = false
+            document.querySelector('#id_acctype_2').checked = false
+        } else if (document.querySelector('#student').checked) {
+            document.querySelector('#id_acctype_2').checked = true
+            document.querySelector('#id_acctype_1').checked = false
+            document.querySelector('#id_acctype_0').checked = false
+        }
+
         if (document.querySelector('#member').checked || document.querySelector('#student').checked) {
             document.querySelector('#evidenceform').style.display = "block"
             document.querySelector('#evidencehead').innerHTML = text
             $("#evidenceform :input").prop("required", true);
-        } else {
+        } else  {
             document.querySelector('#evidenceform').style.display = "none"
             $("#evidenceform :input").prop("required", false);
             $('#evidenceform :input').val(null);
-        }
+        } 
     }
 
     djangoformPaytype0 = document.querySelector('#id_paymenttype_0')

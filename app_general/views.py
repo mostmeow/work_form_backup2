@@ -172,7 +172,7 @@ def registerform(request, classcode):
 
         gettaxwithholding = request.POST['taxwithholding']
 
-        getacctype = request.POST['acctype']
+        # getacctype = request.POST['acctype']
         getimageevidence = request.FILES.get('imageevidence')
         # getimageevidence_data = request.FILES['imageevidence'].file.read()
         
@@ -234,7 +234,7 @@ def registerform(request, classcode):
 
             gettaxwithholding,
 
-            getacctype,
+            # getacctype,
             getimageevidence,
 
             # getpaymenttype,
@@ -257,6 +257,7 @@ def registerform(request, classcode):
                 getthisregis = regisform.save(commit=False)
 
                 getthis_channel = getthisregis.channel
+                getthis_acctype = getthisregis.acctype
                 getthis_receipt = getthisregis.receipt
                 getthis_paymenttype = getthisregis.paymenttype
                 getthis_paywithvoucher = getthisregis.paywithvoucher
@@ -315,7 +316,7 @@ def registerform(request, classcode):
 
                 regismodel.taxwithholding = gettaxwithholding
 
-                regismodel.acctype = getacctype
+                # regismodel.acctype = getacctype
                 regismodel.imageevidence = getimageevidence
                 # regismodel.imageevidence_data = getimageevidence_data
 
