@@ -123,6 +123,7 @@ def registerform(request, classcode):
     if request.method == 'POST':
 
         getemail = request.POST['email']
+        gettitlenameother = request.POST['titlenameother']
         getname = request.POST['name']
         getlastname = request.POST['lastname']
         getphone = request.POST['phone']
@@ -186,6 +187,7 @@ def registerform(request, classcode):
 
         print(
             getemail,
+            gettitlenameother,
             getname, 
             getlastname, 
             getphone, 
@@ -257,6 +259,7 @@ def registerform(request, classcode):
                 getthisregis = regisform.save(commit=False)
 
                 getthis_channel = getthisregis.channel
+                getthis_titlename = getthisregis.titlename
                 getthis_acctype = getthisregis.acctype
                 getthis_receipt = getthisregis.receipt
                 getthis_paymenttype = getthisregis.paymenttype
@@ -269,6 +272,7 @@ def registerform(request, classcode):
                 regismodel.classroom = thisclass
                 #
                 regismodel.email = getemail
+                regismodel.titlename_other = gettitlenameother
                 regismodel.name = getname
                 regismodel.lastname = getlastname
                 regismodel.phone = getphone

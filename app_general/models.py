@@ -105,6 +105,12 @@ class ChannelModel(models.Model):
     def __str__(self):
         return str(self.channel)
 
+TITLENAME = [
+    ('นาย', 'นาย'),
+    ('นาง', 'นาง'),
+    ('นางสาว', 'นางสาว'),
+    ('อื่นๆ', 'อื่นๆ'),
+]
 RECEIPTTYPE = [
     ('นามบุคคล', 'นามบุคคล'),
     ('นามองค์กร', 'นามองค์กร'),
@@ -128,6 +134,9 @@ class RegisterModel(models.Model):
     classroom = models.ForeignKey(ClassroomModel, on_delete=models.CASCADE, blank=True, null=True)
 
     email = models.EmailField(blank=True, null=True)
+
+    titlename = models.CharField(choices=TITLENAME, max_length=200, blank=True, null=True)
+    titlename_other = models.CharField(max_length=200, blank=True, null=True)
     name = models.CharField(max_length=200, blank=True, null=True)
     lastname = models.CharField(max_length=200, blank=True, null=True)
     phone = models.BigIntegerField(blank=True, null=True)

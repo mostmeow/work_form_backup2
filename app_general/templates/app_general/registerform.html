@@ -68,6 +68,43 @@
             </div>
             
             <div class="inputdiv">
+                <label for="#" class="form-label headregisform">คำนำหน้าชื่อ</label><span class="starrequire">*</span>
+                
+                <div style="display: flex; flex-direction: column;">
+                    <div class="radiolabeldiv">
+                        <input type="radio" name="titlename_cover" required value="นาย" id="mrcheck" onchange="titlenameform()">
+                        <label for="#" class="form-label">นาย</label>
+                    </div>
+
+                    <div class="radiolabeldiv">
+                        <input type="radio" name="titlename_cover" required value="นาง" id="msrcheck" onchange="titlenameform()">
+                        <label for="#" class="form-label">นาง</label>
+                    </div>
+
+                    <div class="radiolabeldiv">
+                        <input type="radio" name="titlename_cover" required value="นางสาว" id="misscheck" onchange="titlenameform()">
+                        <label for="#" class="form-label">นางสาว</label>
+                    </div>
+
+                    <div class="radiolabeldiv">
+                        <input type="radio" name="titlename_cover" required value="อื่นๆ" id="titleothercheck" onchange="titlenameform()">
+                        <label for="#" class="form-label">อื่นๆ</label>
+                    </div>
+
+                </div>
+
+                <div style="display: none;">
+                    {{ regisform.titlename }}
+                </div>
+                
+            </div>
+
+            <div class="inputdiv" id="titlenameotherdiv">
+                <label for="#" class="form-label headregisform">โปรดระบุคำนำหน้า</label><span class="starrequire">*</span>
+                <input class="form-control" type="text" name="titlenameother" placeholder="คำนำหน้า" maxlength="200">
+            </div>
+
+            <div class="inputdiv">
                 <label for="#" class="form-label headregisform">ชื่อ</label><span class="starrequire">*</span>
                 <input class="form-control" type="text" name="name" placeholder="ชื่อ" required maxlength="200">
             </div>
@@ -627,6 +664,37 @@
 </section>
 
 <script>
+
+    // TITLENAMEFORM
+    document.querySelector('#titlenameotherdiv').style.display = "none"
+    function titlenameform() {
+        if (document.querySelector('#mrcheck').checked) {
+
+            document.querySelector('#id_titlename_0').checked = true
+            document.querySelector('#titlenameotherdiv').style.display = "none"
+            $("#titlenameotherdiv :input").prop("required", false);
+
+        } else if (document.querySelector('#msrcheck').checked) {
+
+            document.querySelector('#id_titlename_1').checked = true
+            document.querySelector('#titlenameotherdiv').style.display = "none"
+            $("#titlenameotherdiv :input").prop("required", false);
+
+        } else if (document.querySelector('#misscheck').checked) {
+
+            document.querySelector('#id_titlename_2').checked = true
+            document.querySelector('#titlenameotherdiv').style.display = "none"
+            $("#titlenameotherdiv :input").prop("required", false);
+
+        } else if (document.querySelector('#titleothercheck').checked) {
+
+            document.querySelector('#id_titlename_3').checked = true
+            document.querySelector('#titlenameotherdiv').style.display = "block"
+            $("#titlenameotherdiv :input").prop("required", true);
+
+        }
+    }
+
     // CHANGE FORM
     function displayoldaccform() {
         if (document.querySelector('#haveoldacc').checked) {
@@ -685,16 +753,10 @@
         // programatic 
         if (document.querySelector('#normal').checked) {
             document.querySelector('#id_acctype_0').checked = true
-            document.querySelector('#id_acctype_1').checked = false
-            document.querySelector('#id_acctype_2').checked = false
         } else if (document.querySelector('#member').checked) {
             document.querySelector('#id_acctype_1').checked = true
-            document.querySelector('#id_acctype_0').checked = false
-            document.querySelector('#id_acctype_2').checked = false
         } else if (document.querySelector('#student').checked) {
             document.querySelector('#id_acctype_2').checked = true
-            document.querySelector('#id_acctype_1').checked = false
-            document.querySelector('#id_acctype_0').checked = false
         }
 
         if (document.querySelector('#member').checked || document.querySelector('#student').checked) {
@@ -715,20 +777,14 @@
         if (document.querySelector('#usetransfer').checked) {
             // programatic check
             djangoformPaytype0.checked = true
-            djangoformPaytype1.checked = false
-            djangoformPaytype2.checked = false
 
         } else if (document.querySelector('#usecredit').checked) {
             // programatic check
             djangoformPaytype1.checked = true
-            djangoformPaytype0.checked = false
-            djangoformPaytype2.checked = false
 
         } else if (document.querySelector('#usevoucher').checked) {
             // programatic check
             djangoformPaytype2.checked = true
-            djangoformPaytype1.checked = false
-            djangoformPaytype0.checked = false
 
         }
     }
