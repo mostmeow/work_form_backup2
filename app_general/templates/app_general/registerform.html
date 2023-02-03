@@ -59,7 +59,7 @@
     <!-- // -->
 
     <div class="regisdiv">
-        <form action="" name="regisform" method="post" enctype="multipart/form-data">
+        <form action="" name="regisform" method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
             {% csrf_token %}
 
             <div class="inputdiv">
@@ -398,7 +398,7 @@
                 }
             </script>
             
-            <div class="inputdiv" id="taxwithgoldingtype">
+            <div class="inputdiv" id="taxwithholdingtype">
                 <label for="#" class="form-label headregisform">ท่านต้องการหักภาษี ฌ ที่จ่ายหรือไม่</label><span class="starrequire">*</span>
 
                 <div style="display: flex; flex-direction: column;">
@@ -664,6 +664,16 @@
 </section>
 
 <script>
+    // FORMVALIDATION
+    function validateForm() {
+        if (document.querySelector('#indicheck').checked && document.querySelector('#inditaxinput').value.length !== 13) {
+            alert("เลขประจำตัวผู้เสียไม่ถูกต้อง");
+            return false;
+        } else if (document.querySelector('#orgcheck').checked && document.querySelector('#orgtaxidinput').value.length !== 13) {
+            alert("เลขประจำตัวผู้เสียไม่ถูกต้อง");
+            return false;
+        }
+    }
 
     // TITLENAMEFORM
     document.querySelector('#titlenameotherdiv').style.display = "none"
@@ -673,18 +683,21 @@
             document.querySelector('#id_titlename_0').checked = true
             document.querySelector('#titlenameotherdiv').style.display = "none"
             $("#titlenameotherdiv :input").prop("required", false);
+            $('#titlenameotherdiv :input').val('');
 
         } else if (document.querySelector('#msrcheck').checked) {
 
             document.querySelector('#id_titlename_1').checked = true
             document.querySelector('#titlenameotherdiv').style.display = "none"
             $("#titlenameotherdiv :input").prop("required", false);
+            $('#titlenameotherdiv :input').val('');
 
         } else if (document.querySelector('#misscheck').checked) {
 
             document.querySelector('#id_titlename_2').checked = true
             document.querySelector('#titlenameotherdiv').style.display = "none"
             $("#titlenameotherdiv :input").prop("required", false);
+            $('#titlenameotherdiv :input').val('');
 
         } else if (document.querySelector('#titleothercheck').checked) {
 
@@ -709,13 +722,13 @@
 
     document.querySelector('#notax').style.display = "none"
     document.querySelector('#notaxlabel').style.display = "none"
-    document.querySelector('#taxwithgoldingtype').style.display = "none"
+    document.querySelector('#taxwithholdingtype').style.display = "none"
     function switchreceiptform() {
         if (document.querySelector('#indicheck').checked) {
 
             // programatic check tax no tax
             document.querySelector('#notax').checked = true
-            document.querySelector('#taxwithgoldingtype').style.display = "none"
+            document.querySelector('#taxwithholdingtype').style.display = "none"
 
             // programatic check
             document.querySelector('#id_receipt_0').checked = true
@@ -733,7 +746,7 @@
 
             // programatic check tax no tax
             document.querySelector('#notax').checked = false
-            document.querySelector('#taxwithgoldingtype').style.display = "block"
+            document.querySelector('#taxwithholdingtype').style.display = "block"
 
             // programatic check
             document.querySelector('#id_receipt_1').checked = true
@@ -749,6 +762,7 @@
         }
     }
 
+    // SHOW EVIDENCEFORM
     function showevidenceform(text) {
         // programatic 
         if (document.querySelector('#normal').checked) {
@@ -770,9 +784,9 @@
         } 
     }
 
-    djangoformPaytype0 = document.querySelector('#id_paymenttype_0')
-    djangoformPaytype1 = document.querySelector('#id_paymenttype_1')
-    djangoformPaytype2 = document.querySelector('#id_paymenttype_2')
+    let djangoformPaytype0 = document.querySelector('#id_paymenttype_0')
+    let djangoformPaytype1 = document.querySelector('#id_paymenttype_1')
+    let djangoformPaytype2 = document.querySelector('#id_paymenttype_2')
     function paymentProgramatic() {
         if (document.querySelector('#usetransfer').checked) {
             // programatic check
@@ -789,6 +803,7 @@
         }
     }
 
+    // SHOW VOUCHER FORM
     function showvoucherform() {
 
         paymentProgramatic()
@@ -816,9 +831,9 @@
         }
     }
 
-    djangoformpayVoucher0 = document.querySelector('#id_paywithvoucher_0')
-    djangoformpayVouche1 = document.querySelector('#id_paywithvoucher_1')
-    djangoformpayVouche2 = document.querySelector('#id_paywithvoucher_2')
+    let djangoformpayVoucher0 = document.querySelector('#id_paywithvoucher_0')
+    let djangoformpayVouche1 = document.querySelector('#id_paywithvoucher_1')
+    let djangoformpayVouche2 = document.querySelector('#id_paywithvoucher_2')
 
     djangoformpayVouche2.checked = true
     function paywithVoucherProgramatic() {
@@ -843,8 +858,8 @@
     }
 
     // CHECK TAXID LENGTH
-    inditaxid = document.querySelector('#inditaxinput')
-    alertinditaxid = document.querySelector('#inditaxiderror')
+    let inditaxid = document.querySelector('#inditaxinput')
+    let alertinditaxid = document.querySelector('#inditaxiderror')
     alertinditaxid.style.display = "none"
     document.querySelector('#inditaxinput').addEventListener('change', () => {
         if (inditaxid.value.length !== 13) {
@@ -855,8 +870,8 @@
         }
     })
 
-    orgtaxid = document.querySelector('#orgtaxidinput')
-    alertorgtaxid = document.querySelector('#orgtaxiderror')
+    let orgtaxid = document.querySelector('#orgtaxidinput')
+    let alertorgtaxid = document.querySelector('#orgtaxiderror')
     alertorgtaxid.style.display = "none"
     document.querySelector('#orgtaxidinput').addEventListener('change', () => {
         if (orgtaxid.value.length !== 13) {
