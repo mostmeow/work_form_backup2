@@ -7,7 +7,7 @@ from import_export.admin import ExportActionMixin
 # Register your models here.
 
 class CourseAdmin(admin.ModelAdmin):
-    list_display = ['code','name']
+    list_display = ['id','code','name']
 
 admin.site.register(CourseModel, CourseAdmin)
 
@@ -18,7 +18,7 @@ admin.site.register(ClassroomModel, ClassroomAdmin)
 
 class RegisterAdmin(ExportActionMixin, admin.ModelAdmin):
     list_display = ['classroom','email','name','lastname','timestamp']
-    list_filter = ['channel','receipt','paymenttype','paywithvoucher','timestamp',]
+    list_filter = ['classroom','channel','receipt','paymenttype','paywithvoucher','timestamp',]
     search_fields = ['classroom',]
 
 admin.site.register(RegisterModel, RegisterAdmin)
