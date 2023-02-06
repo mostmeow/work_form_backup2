@@ -340,6 +340,7 @@ def registerform(request, classcode):
 
                 data = {
                     'price':nowprice,
+                    'getthis_acctype':getthis_acctype,
                     'regisid':getthisregis.id,
                 }
                 json_data = json.dumps(data)
@@ -373,9 +374,21 @@ def checkouttransfer(request, data):
     jsondata = json.loads(json_decoded_data)
 
     price = float(jsondata['price'])
+    acctype = jsondata['getthis_acctype']
+
     vat = price * 0.07
     allprice = price + vat
 
+    if acctype == 'สมาชิกสมาคม':
+        discount = 300
+        allprice = price - 300 + vat
+    elif acctype == 'นิสิต/นักศึกษา':
+        discount = 1000
+        allprice = price - 1000 + vat
+    elif acctype == 'บุคคลทั่วไป':
+        discount = 0
+        allprice = price + vat
+    
     regidis = jsondata['regisid']
 
     context = {
@@ -383,6 +396,7 @@ def checkouttransfer(request, data):
         'vat':vat,
         'allprice':allprice,
         'regidis':regidis,
+        'discount':discount,
     }
     return render(request, 'app_general/checkouttransfer.html', context)
 
@@ -391,8 +405,20 @@ def checkoutcredit(request, data):
     jsondata = json.loads(json_decoded_data)
 
     price = float(jsondata['price'])
+    acctype = jsondata['getthis_acctype']
+
     vat = price * 0.07
-    allprice = price + vat
+    withholding = price * 0.03
+
+    if acctype == 'สมาชิกสมาคม':
+        discount = 300
+        allprice = price - 300 + vat - withholding
+    elif acctype == 'นิสิต/นักศึกษา':
+        discount = 1000
+        allprice = price - 1000 + vat - withholding
+    elif acctype == 'บุคคลทั่วไป':
+        discount = 0
+        allprice = price + vat - withholding
 
     regidis = jsondata['regisid']
 
@@ -401,6 +427,8 @@ def checkoutcredit(request, data):
         'vat':vat,
         'allprice':allprice,
         'regidis':regidis,
+        'discount':discount,
+        'withholding':withholding,
     }
     return render(request, 'app_general/checkoutcredit.html', context)
 

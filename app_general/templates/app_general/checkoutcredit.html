@@ -9,7 +9,9 @@
     <p>ชำระ เครดิต</p>
     <p>regisid: {{ regidis }}</p>
     <p>price: {{ price|floatformat:'g' }}</p>
+    <p>ส่วนลด: {{ discount|floatformat:'g' }}</p>
     <p>vat 7%: {{ vat|floatformat:'g' }}</p>
+    <p>หักภาษี ณ ที่จ่าย: {{ withholding|floatformat:'g' }}</p>
     <p>allprice: {{ allprice|floatformat:'g' }}</p>
 </section>
 {% endblock %}
