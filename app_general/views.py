@@ -377,7 +377,6 @@ def checkouttransfer(request, data):
     acctype = jsondata['getthis_acctype']
 
     vat = price * 0.07
-    allprice = price + vat
 
     if acctype == 'สมาชิกสมาคม':
         discount = 300
