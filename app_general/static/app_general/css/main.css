@@ -112,6 +112,7 @@ CUSTOM INPUT FILE */
     padding: 10px;
     padding-top: 30px;
     padding-bottom: 30px;
+    font-weight: 600;
 }
 .maincoursediv {
     margin-top: 50px;
@@ -138,19 +139,21 @@ CUSTOM INPUT FILE */
     padding: 10px;
     padding-top: 30px;
     padding-bottom: 30px;
+    font-weight: 600;
 }
 .classroomsec {
-    display: grid;
+    display: flex;
     justify-content: center;
     align-items: center;
     text-align: center;
     width: 100%;
 }
 .classroomdiv {
+    position: relative;
     justify-content: center;
     align-items: center;
     text-align: center;
-    width: 100%;
+    width: 80%;
     margin-top: 50px;
     margin-bottom: 50px;
 }

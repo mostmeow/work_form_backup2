@@ -7,7 +7,9 @@ import datetime
 class CourseModel(models.Model):
     code = models.CharField(max_length=200, blank=True, null=True)
     name = models.CharField(max_length=200, blank=True, null=True)
-    image = models.ImageField(blank=True, null=True, upload_to='imagecourse/')
+    order_number = models.BigIntegerField(blank=True, null=True)
+    # image = models.ImageField(blank=True, null=True, upload_to='imagecourse/')
+    timestamp = models.DateTimeField(auto_now_add=True, blank=True, null=True)
 
     def __str__(self):
         return str(self.code)

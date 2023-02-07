@@ -54,22 +54,7 @@ SIGNUPSUCCESS = 50
 # Create your views here.
 
 def home(request):
-    allcourse = CourseModel.objects.all()
-
-    #
-    # allregis = RegisterModel.objects.all()
-    # arrayimage1 = []
-    # arrayimage2 = []
-    # for thisregis in allregis:
-    #     image1 = thisregis.imagevoucherevidence_data
-    #     b = base64.b64decode(image1)
-    #     # print(b)
-        
-
-    #     image2 = thisregis.imageevidence_data
-
-    #     arrayimage1.append(b)
-    #
+    allcourse = CourseModel.objects.all().order_by('order_number')
 
     context = {
         'allcourse':allcourse,
