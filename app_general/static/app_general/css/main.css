@@ -98,6 +98,12 @@ CUSTOM INPUT FILE */
     display: grid;
     justify-content: center;
     align-items: center;
+    text-align: center;
+}
+.maincoursehead {
+    width: 100%;
+    margin-top: 50px;
+    text-align: center;
 }
 .maincoursediv {
     margin-top: 50px;
@@ -116,10 +122,30 @@ CUSTOM INPUT FILE */
     justify-content: center;
     align-items: center;
     text-align: center;
+    width: 100%;
 }
 .classroomdiv {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    width: 100%;
     margin-top: 50px;
     margin-bottom: 50px;
+}
+.classroomitem {
+    background-color: var(--shade1);
+    padding: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border-radius: 7px;
+    transition-duration: 0.3s;
+}
+.classroomitem:hover {
+    background-color: var(--shade2);
+}
+.classroomitem a {
+    text-decoration: none;
+    color: var(--white);
 }
 
 /* REGISTERPAGE */

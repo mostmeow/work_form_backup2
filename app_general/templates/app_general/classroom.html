@@ -7,12 +7,14 @@
 {% block content %}
 <section class="classroomsec">
     <div class="classroomdiv">
-        <h4>ห้องเรียน"{{ thiscourse.name }}"ที่เปิดรับสมัคร</h4>
+        <h4>ห้องเรียน "{{ thiscourse.name }}" ที่เปิดรับสมัคร</h4>
         {% for class in allclass_active %}
-            <div>
+            <div class="classroomitem">
                 <a href="{% url 'registerform' class.id %}">
-                    <button type="submit" class="btn btn-primary mb-3 submitbtn">
-                        {{ class.course.name }} | {{ class.get_class_type_display }} ( {{ class.generation }} : {{ class.date_start }} - {{ class.date_end }} )
+                    <div>
+                        {{ class.course.name }} | {{ class.get_class_type_display }}
+                        <br>
+                        ( {{ class.generation }} : {{ class.date_start }} - {{ class.date_end }} )
                         <br>
                         {% if class.get_status_price == 'earlybird' %}
 
@@ -28,7 +30,7 @@
 
                         {% endif %}
 
-                    </button>
+                    </div>
                 </a>
             </div>
         {% endfor %}
