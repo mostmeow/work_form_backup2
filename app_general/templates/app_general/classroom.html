@@ -5,14 +5,18 @@
 {% endblock %}
 
 {% block content %}
+<div class="clasroomhead">
+    <h4>ห้องเรียน "{{ thiscourse.name }}" ที่เปิดรับสมัคร</h4>
+</div>
 <section class="classroomsec">
     <div class="classroomdiv">
-        <h4>ห้องเรียน "{{ thiscourse.name }}" ที่เปิดรับสมัคร</h4>
         {% for class in allclass_active %}
             <div class="classroomitem">
                 <a href="{% url 'registerform' class.id %}">
                     <div>
-                        {{ class.course.name }} | {{ class.get_class_type_display }}
+                        <div class="classroomname">
+                            {{ class.course.name }} | {{ class.get_class_type_display }}
+                        </div>
                         <br>
                         ( {{ class.generation }} : {{ class.date_start }} - {{ class.date_end }} )
                         <br>
