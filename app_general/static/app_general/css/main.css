@@ -95,7 +95,6 @@ CUSTOM INPUT FILE */
 
 /* ALLCOURSE PAGE */
 .maincoursesec {
-    display: grid;
     justify-content: center;
     align-items: center;
     text-align: center;
@@ -115,14 +114,33 @@ CUSTOM INPUT FILE */
     font-weight: 600;
 }
 .maincoursediv {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     margin-top: 50px;
     margin-bottom: 50px;
-    text-align: left;
+    justify-content: center;
+    align-items: center;
+    max-width: 1000px;
+    gap: 10px;
+    margin-left: 50%;
+    transform: translateX(-50%);
+}
+@media only screen and (max-width: 700px) {
+    .maincoursediv {
+        display: grid;
+    grid-template-columns: 1fr;
+    }
+  }
+.maincoursecard {
+    justify-content: center;
+    align-items: center;
 }
 .coursecard {
+    margin-left: 50%;
+    transform: translateX(-50%);
     overflow: hidden;
     border: none;
-    margin: 10px;
+    text-align: left;
     box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
 }
 

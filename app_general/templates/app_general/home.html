@@ -12,6 +12,7 @@
     
     <div class="maincoursediv">
         {% for course in allcourse %}
+        <div class="maincoursecard">
             <div class="card coursecard" style="width: 18rem;">
                 <img src="{% static 'app_general/assets/pic/dummy.jpg' %}" class="card-img-top" alt="...">
                 <div class="card-body">
@@ -20,6 +21,7 @@
                     <a href="{% url 'classroom' course.id %}" class="btn btn-primary submitbtn">สมัครเรียน</a>
                 </div>
             </div>
+        </div>
         {% endfor %}
     </div>
     
