@@ -147,6 +147,9 @@ CUSTOM INPUT FILE */
     text-decoration: none;
     color: var(--white);
 }
+.classroomitem span {
+    font-weight: 600;
+}
 
 /* REGISTERPAGE */
 .regissec {
