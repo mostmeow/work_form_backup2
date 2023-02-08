@@ -331,7 +331,7 @@ def registerform(request, classcode):
                 
                 regismodel.save()
 
-                messages.success(request, 'ลงทะเบียนสำเร็จ')
+                # messages.success(request, 'ลงทะเบียนสำเร็จ')
                 # return redirect('home')
                 # return redirect('signup', regisid=getthisregis.id)
 
@@ -410,8 +410,8 @@ def checkouttransfer(request, data):
     if request.method == 'POST':
         url = "http://127.0.0.1:5000/book"
         headers = {
-            'App_Id': '4c177c',
-            'App_Key': '6852599182ba85d70066986ca2b3',
+            # 'App_Id': '4c177c',
+            # 'App_Key': '6852599182ba85d70066986ca2b3',
             'Content-Type': 'application/json',
         }
         data = {'text': 'i feel stomach pain but no coughing today'}
@@ -419,6 +419,9 @@ def checkouttransfer(request, data):
         r = requests.post(url, headers=headers, data=json.dumps(data))
         print(r.status_code)
         print(r.json())
+
+        messages.success(request, 'ลงทะเบียนสำเร็จ')
+        return redirect('home')
     #
 
     context = {
