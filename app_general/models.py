@@ -101,6 +101,13 @@ class ClassroomModel(models.Model):
                 
         return  statusprice
 
+class VoucherModel(models.Model):
+    classroom = models.OneToOneField(ClassroomModel, on_delete=models.CASCADE, blank=True, null=True)
+    voucher_code = models.CharField(max_length=200, blank=True, null=True)
+    margin = models.BigIntegerField(blank=True, null=True)
+
+    def __str__(self):
+        return str(self.classroom)
 class ChannelModel(models.Model):
     channel = models.CharField(max_length=200, blank=True, null=True)
 

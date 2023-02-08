@@ -36,6 +36,13 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 import uuid
 from django.core.files.base import ContentFile
 
+# urllib
+from urllib import request, parse
+from urllib.request import urlopen
+
+# requests
+import requests
+
 # date
 import datetime
 
@@ -99,6 +106,11 @@ def classroom(request, coursecode):
 def registerform(request, classcode):
 
     thisclass = ClassroomModel.objects.get(id=classcode)
+    try:
+        thisvoucher = VoucherModel.objects.get(classroom=classcode)
+    except:
+        thisvoucher = None
+        pass
 
     nowprice = thisclass.get_now_price
     print(nowprice)
@@ -323,11 +335,21 @@ def registerform(request, classcode):
                 # return redirect('home')
                 # return redirect('signup', regisid=getthisregis.id)
 
-                data = {
-                    'price':nowprice,
-                    'getthis_acctype':getthis_acctype,
-                    'regisid':getthisregis.id,
-                }
+                try:
+                    data = {
+                        'price':nowprice,
+                        'getthis_acctype':getthis_acctype,
+                        'regisid':getthisregis.id,
+                        'vouchermargin':thisvoucher.margin,
+                    }
+                except:
+                    data = {
+                        'price':nowprice,
+                        'getthis_acctype':getthis_acctype,
+                        'regisid':getthisregis.id,
+                    }
+                    pass
+                
                 json_data = json.dumps(data)
                 encoded_json_data = urlsafe_base64_encode(force_bytes(json_data))
 
@@ -351,6 +373,7 @@ def registerform(request, classcode):
         'regisform':regisform,
         'classcode':classcode,
         'thisclass':thisclass,
+        'thisvoucher':thisvoucher,
     }
     return render(request, 'app_general/registerform.html', context)
 
@@ -374,6 +397,28 @@ def checkouttransfer(request, data):
         allprice = price + vat
     
     regidis = jsondata['regisid']
+
+    #
+    # url = "http://127.0.0.1:5000/book"
+    # headers = {
+    #     'Content-Type': 'application/json',
+    # }
+    # r = requests.get(url, headers=headers)
+    # print(r.status_code)
+    # print(r.json())
+    #
+    # if request.method == 'POST':
+    #     url = "https://api.infermedica.com/dev/parse"
+    #     headers = {
+    #         'App_Id': '4c177c',
+    #         'App_Key': '6852599182ba85d70066986ca2b3',
+    #         'Content-Type': 'application/json',
+    #     }
+    #     data = {'text': 'i feel stomach pain but no coughing today'}
+
+    #     r = requests.post(url, headers=headers, data=json.dumps(data))
+    #     print(r.status_code)
+    #     print(r.json())
 
     context = {
         'price':price,
@@ -421,8 +466,10 @@ def checkoutvouchertransfer(request, data):
     jsondata = json.loads(json_decoded_data)
 
     price = float(jsondata['price'])
+    vouchermargin = float(jsondata['vouchermargin'])
     vat = price * 0.07
-    allprice = price + vat
+    # allprice = price + vat
+    allprice = vouchermargin
 
     regidis = jsondata['regisid']
 
@@ -431,6 +478,7 @@ def checkoutvouchertransfer(request, data):
         'vat':vat,
         'allprice':allprice,
         'regidis':regidis,
+        'vouchermargin':vouchermargin,
     }
     return render(request, 'app_general/checkoutvouchertransfer.html', context)
 
@@ -439,8 +487,9 @@ def checkoutvouchercredit(request, data):
     jsondata = json.loads(json_decoded_data)
 
     price = float(jsondata['price'])
+    vouchermargin = float(jsondata['vouchermargin'])
     vat = price * 0.07
-    allprice = price + vat
+    allprice = vouchermargin
 
     regidis = jsondata['regisid']
 
@@ -449,6 +498,7 @@ def checkoutvouchercredit(request, data):
         'vat':vat,
         'allprice':allprice,
         'regidis':regidis,
+        'vouchermargin':vouchermargin,
     }
     return render(request, 'app_general/checkoutvouchercredit.html', context)
 

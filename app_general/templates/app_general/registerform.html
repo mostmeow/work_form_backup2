@@ -507,6 +507,11 @@
                     <input type="file" onchange="readURL2(this)" accept="image/png, image/jpeg" name="imagevoucherevidence">
                     <img id="img-preview2" src="https://ami-sni.com/wp-content/themes/consultix/images/no-image-found-360x250.png" width="250px">
                 </div>
+
+                <div>
+                    <label for="#" class="form-label">รหัส voucher</label><span class="starrequire">*</span>
+                    <input class="form-control" type="text" id="vouchercode" placeholder="โปรดใส่รหัส voucher" maxlength="200">
+                </div>
             </div>
 
             <div class="inputdiv" id="evidenceform" style="display: none;">
@@ -672,6 +677,9 @@
         } else if (document.querySelector('#orgcheck').checked && document.querySelector('#orgtaxidinput').value.length !== 13) {
             alert("เลขประจำตัวผู้เสียไม่ถูกต้อง");
             return false;
+        } else if (document.querySelector('#usevoucher').checked && ( document.querySelector('#vouchercode').value !== '{{ thisvoucher.voucher_code }}' || document.querySelector('#vouchercode').value == '' ) ) {
+            alert("รหัส voucher ไม่ถูกต้อง");
+            return false;
         }
     }
 
@@ -781,6 +789,9 @@
             document.querySelector('#evidenceform').style.display = "none"
             $("#evidenceform :input").prop("required", false);
             $('#evidenceform :input').val(null);
+
+            let noimage = "https://ami-sni.com/wp-content/themes/consultix/images/no-image-found-360x250.png";
+            $("#img-preview1").attr("src", noimage);
         } 
     }
 
@@ -828,6 +839,9 @@
                         
             document.querySelector('#hiddentypevoucher').checked = true
             document.querySelector('#id_paywithvoucher_2').checked = true
+
+            let noimage = "https://ami-sni.com/wp-content/themes/consultix/images/no-image-found-360x250.png";
+            $("#img-preview2").attr("src", noimage);
         }
     }
 

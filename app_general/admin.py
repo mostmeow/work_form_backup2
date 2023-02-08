@@ -16,6 +16,12 @@ class ClassroomAdmin(admin.ModelAdmin):
 
 admin.site.register(ClassroomModel, ClassroomAdmin)
 
+class VoucherAdmin(admin.ModelAdmin):
+    list_display = ['id','classroom','voucher_code','margin']
+    list_filter = ['classroom',]
+
+admin.site.register(VoucherModel, VoucherAdmin)
+
 class RegisterAdmin(ExportActionMixin, admin.ModelAdmin):
     list_display = ['classroom','email','name','lastname','timestamp']
     list_filter = ['classroom','channel','receipt','paymenttype','paywithvoucher','timestamp',]
