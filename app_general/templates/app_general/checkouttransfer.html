@@ -12,5 +12,10 @@
     <p>ส่วนลด: {{ discount|floatformat:'g' }}</p>
     <p>vat 7%: {{ vat|floatformat:'g' }}</p>
     <p>allprice: {{ allprice|floatformat:'g' }}</p>
+
+    <form action="{% url 'checkouttransfer' data %}" method="post">
+        {% csrf_token %}
+        <button>ชำระ</button>
+    </form>
 </section>
 {% endblock %}

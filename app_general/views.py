@@ -406,19 +406,20 @@ def checkouttransfer(request, data):
     # r = requests.get(url, headers=headers)
     # print(r.status_code)
     # print(r.json())
-    #
-    # if request.method == 'POST':
-    #     url = "https://api.infermedica.com/dev/parse"
-    #     headers = {
-    #         'App_Id': '4c177c',
-    #         'App_Key': '6852599182ba85d70066986ca2b3',
-    #         'Content-Type': 'application/json',
-    #     }
-    #     data = {'text': 'i feel stomach pain but no coughing today'}
+    
+    if request.method == 'POST':
+        url = "http://127.0.0.1:5000/book"
+        headers = {
+            'App_Id': '4c177c',
+            'App_Key': '6852599182ba85d70066986ca2b3',
+            'Content-Type': 'application/json',
+        }
+        data = {'text': 'i feel stomach pain but no coughing today'}
 
-    #     r = requests.post(url, headers=headers, data=json.dumps(data))
-    #     print(r.status_code)
-    #     print(r.json())
+        r = requests.post(url, headers=headers, data=json.dumps(data))
+        print(r.status_code)
+        print(r.json())
+    #
 
     context = {
         'price':price,
@@ -426,6 +427,7 @@ def checkouttransfer(request, data):
         'allprice':allprice,
         'regidis':regidis,
         'discount':discount,
+        'data':data,
     }
     return render(request, 'app_general/checkouttransfer.html', context)
 
