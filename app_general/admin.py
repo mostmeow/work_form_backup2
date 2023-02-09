@@ -26,7 +26,7 @@ admin.site.register(VoucherModel, VoucherAdmin)
 class RegisterAdmin(ExportActionMixin, admin.ModelAdmin):
     list_display = ['classroom','email','name','lastname','timestamp']
     list_filter = ['classroom','channel','receipt','paymenttype','paywithvoucher','timestamp',]
-    search_fields = ['classroom',]
+    search_fields = ['name',]
 
 admin.site.register(RegisterModel, RegisterAdmin)
 
