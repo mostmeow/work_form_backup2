@@ -80,18 +80,35 @@ WSGI_APPLICATION = 'newform_test.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'project_newform',
-        'USER': 'postgres',
-        'PASSWORD': 'forwork12345',
-        'HOST': 'localhost',
-        'POST': '5432',
-        # 'HOST': 'db',
-        # 'POST': '',
+# [START db_setup]
+if os.getenv('GAE_APPLICATION', None):
+    # Running on production App Engine, so connect to Google Cloud SQL using
+    # the unix socket at /cloudsql/<your-cloudsql-connection string>
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'HOST': '/cloudsql/[YOUR-CONNECTION-NAME]',
+            'USER': '[YOUR-USERNAME]',
+            'PASSWORD': '[YOUR-PASSWORD]',
+            'NAME': '[YOUR-DATABASE]',
+        }
     }
-}
+else:
+    # Running locally so connect to either a local MySQL instance or connect 
+    # to Cloud SQL via the proxy.  To start the proxy via command line: 
+    #    $ cloud_sql_proxy -instances=[INSTANCE_CONNECTION_NAME]=tcp:3306 
+    # See https://cloud.google.com/sql/docs/mysql-connect-proxy
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': 'project_newform',
+            'USER': 'postgres',
+            'PASSWORD': 'forwork12345',
+            'HOST': 'localhost',
+            'POST': '5432',
+        }
+    }
+# [END db_setup]
 
 
 # Password validation

@@ -13,6 +13,7 @@ admin.site.register(CourseModel, CourseAdmin)
 
 class ClassroomAdmin(admin.ModelAdmin):
     list_display = ['id','course','generation','date_start','class_type']
+    list_filter = ['course','class_type','generation',]
 
 admin.site.register(ClassroomModel, ClassroomAdmin)
 
