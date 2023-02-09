@@ -407,24 +407,24 @@ def checkouttransfer(request, data):
     # print(r.status_code)
     # print(r.json())
     
-    # if request.method == 'POST':
-    #     url = "http://127.0.0.1:5000/book"
-    #     headers = {
-    #         # 'App_Id': '4c177c',
-    #         # 'App_Key': '6852599182ba85d70066986ca2b3',
-    #         'Content-Type': 'application/json',
-    #     }
-    #     data = {
-    #         'allprice': allprice,
-    #         'regidis':regidis,
-    #     }
+    if request.method == 'POST':
+        url = "http://127.0.0.1:5000/book"
+        headers = {
+            # 'App_Id': '4c177c',
+            # 'App_Key': '6852599182ba85d70066986ca2b3',
+            'Content-Type': 'application/json',
+        }
+        data = {
+            'allprice': allprice,
+            'regidis':regidis,
+        }
 
-    #     r = requests.post(url, headers=headers, data=json.dumps(data))
-    #     print(r.status_code)
-    #     print(r.json())
+        r = requests.post(url, headers=headers, data=json.dumps(data))
+        print(r.status_code)
+        print(r.json())
 
-    #     messages.success(request, 'ลงทะเบียนสำเร็จ')
-    #     return redirect('home')
+        messages.success(request, 'ลงทะเบียนสำเร็จ')
+        return redirect('home')
     
 
     context = {

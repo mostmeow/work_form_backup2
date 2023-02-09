@@ -510,6 +510,7 @@
 
                 <div>
                     <label for="#" class="form-label">รหัส voucher</label><span class="starrequire">*</span>
+                    <div class="alert alert-warning" id="vouchercodeerror" role="alert">รหัส voucher ผิด</div>
                     <input class="form-control" type="text" id="vouchercode" placeholder="โปรดใส่รหัส voucher" maxlength="200">
                 </div>
             </div>
@@ -844,6 +845,15 @@
             $("#img-preview2").attr("src", noimage);
         }
     }
+
+    document.querySelector('#vouchercodeerror').style.display = "none"
+    document.querySelector('#vouchercode').addEventListener('change', ()=> {
+        if (document.querySelector('#vouchercode').value !== '{{ thisvoucher.voucher_code }}' || document.querySelector('#vouchercode').value == '') {
+            document.querySelector('#vouchercodeerror').style.display = "block"
+        } else {
+            document.querySelector('#vouchercodeerror').style.display = "none"
+        }
+    })
 
     let djangoformpayVoucher0 = document.querySelector('#id_paywithvoucher_0')
     let djangoformpayVouche1 = document.querySelector('#id_paywithvoucher_1')
