@@ -10,6 +10,7 @@ urlpatterns = [
     path('registerform/<int:classcode>', views.registerform, name='registerform'),
 
     path('checkouttransfer/<str:data>', views.checkouttransfer, name='checkouttransfer'),
+    path('qrtransfer/<str:data>', views.qrtransfer, name='qrtransfer'),
     path('checkoutcredit/<str:data>', views.checkoutcredit, name='checkoutcredit'),
 
     path('checkoutvouchertransfer/<str:data>', views.checkoutvouchertransfer, name='checkoutvouchertransfer'),

@@ -396,51 +396,60 @@ def checkouttransfer(request, data):
         discount = 0
         allprice = price + vat
     
-    regidis = jsondata['regisid']
+    regisid = jsondata['regisid']
 
     #
-    try:
-        url = "http://127.0.0.1:5000/book"
-        headers = {
-            'Content-Type': 'application/json',
-        }
-        r = requests.get(url, headers=headers)
-        print(r.status_code)
-        print(r.json())
-    except:
-        pass
-    
     if request.method == 'POST':
-        url = "http://127.0.0.1:5000/book"
-        headers = {
-            # 'App_Id': '4c177c',
-            # 'App_Key': '6852599182ba85d70066986ca2b3',
-            'Content-Type': 'application/json',
-        }
-        data = {
-            'allprice': '%.2f' % float(allprice),
-            'regidis':regidis,
-            'return_url':request.build_absolute_uri()
-        }
+        try:
+            token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJCV0VCIiwiaWF0IjoxNjY2MDY3Mzc5LCJleHAiOjE5ODE0MjczNzl9.k4ozQfkb18qzchvwTh8COy75Pdvia0OEVqog3NGij70'
+            url = "https://pgwuat.mycmsk.com/api/v1/scb/payment/qr/create"
+            headers = {
+                'accept': 'application/json',
+                'Authorization': 'Bearer ' + token,
+                'Content-Type': 'application/json',
+            }
+            data = {
+                "amount": allprice,
+                "ref1": "REFERENCE1",
+                "ref2": "REFERENCE2",
+                "email": "it-dev@cmsk.co.th",
+                "callback": request.build_absolute_uri(),
+            }
+            jsondata = json.dumps(data)
 
-        r = requests.post(url, headers=headers, data=json.dumps(data))
-        print(r.status_code)
-        print(r.json())
-        # print(r.json()['body']['allprice'])
+            r = requests.post(url, headers=headers, json=data)
+            print(r.status_code)
+            print(r.json())
+            print(r.json()['qrUrl'])
 
-        messages.success(request, 'ลงทะเบียนสำเร็จ')
-        return redirect('home')
-    
+            data = r.json()
+            json_data = json.dumps(data)
+            encoded_json_data = urlsafe_base64_encode(force_bytes(json_data))
+
+            return redirect('qrtransfer', data=encoded_json_data)
+        except:
+            messages.error(request, 'ผิดพลาด')
 
     context = {
         'price':price,
         'vat':vat,
         'allprice':allprice,
-        'regidis':regidis,
+        'regisid':regisid,
         'discount':discount,
         'data':data,
     }
     return render(request, 'app_general/checkouttransfer.html', context)
+
+def qrtransfer(request, data):
+    json_decoded_data = force_str(urlsafe_base64_decode(data))
+    jsondata = json.loads(json_decoded_data)
+    print(jsondata)
+    qrurl = jsondata['qrUrl']
+    print(qrurl)
+    context = {
+        'qrurl':qrurl,
+    }
+    return render(request, 'app_general/qrtransfer.html', context)
 
 def checkoutcredit(request, data):
     json_decoded_data = force_str(urlsafe_base64_decode(data))
@@ -462,15 +471,46 @@ def checkoutcredit(request, data):
         discount = 0
         allprice = price + vat - withholding
 
-    regidis = jsondata['regisid']
+    regisid = jsondata['regisid']
+
+    #
+    if request.method == 'POST':
+        try:
+            token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJCV0VCIiwiaWF0IjoxNjY2MDY3Mzc5LCJleHAiOjE5ODE0MjczNzl9.k4ozQfkb18qzchvwTh8COy75Pdvia0OEVqog3NGij70'
+            url = "https://pgwuat.mycmsk.com/api/v1/2c2p/payment/token/create"
+            headers = {
+                'accept': 'application/json',
+                'Authorization': 'Bearer ' + token,
+                'Content-Type': 'application/json',
+            }
+            data = {
+                "amount": 1000,
+                "invoiceNo": "REFERENCE1",
+                "description": "REFERENCE2",
+                "email": "it-dev@cmsk.co.th"
+            }
+            jsondata = json.dumps(data)
+
+            r = requests.post(url, headers=headers, json=data)
+            print(r.status_code)
+            print(r.json())
+
+            data = r.json()
+            json_data = json.dumps(data)
+            encoded_json_data = urlsafe_base64_encode(force_bytes(json_data))
+
+            # return redirect('qrtransfer', data=encoded_json_data)
+        except:
+            messages.error(request, 'ผิดพลาด')
 
     context = {
         'price':price,
         'vat':vat,
         'allprice':allprice,
-        'regidis':regidis,
+        'regisid':regisid,
         'discount':discount,
         'withholding':withholding,
+        'data':data,
     }
     return render(request, 'app_general/checkoutcredit.html', context)
 
@@ -484,13 +524,13 @@ def checkoutvouchertransfer(request, data):
     # allprice = price + vat
     allprice = vouchermargin
 
-    regidis = jsondata['regisid']
+    regisid = jsondata['regisid']
 
     context = {
         'price':price,
         'vat':vat,
         'allprice':allprice,
-        'regidis':regidis,
+        'regisid':regisid,
         'vouchermargin':vouchermargin,
     }
     return render(request, 'app_general/checkoutvouchertransfer.html', context)
@@ -504,13 +544,13 @@ def checkoutvouchercredit(request, data):
     vat = price * 0.07
     allprice = vouchermargin
 
-    regidis = jsondata['regisid']
+    regisid = jsondata['regisid']
 
     context = {
         'price':price,
         'vat':vat,
         'allprice':allprice,
-        'regidis':regidis,
+        'regisid':regisid,
         'vouchermargin':vouchermargin,
     }
     return render(request, 'app_general/checkoutvouchercredit.html', context)

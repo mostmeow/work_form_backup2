@@ -13,5 +13,10 @@
     <p>vat 7%: {{ vat|floatformat:'g' }}</p>
     <p>หักภาษี ณ ที่จ่าย 3%: {{ withholding|floatformat:'g' }}</p>
     <p>allprice: {{ allprice|floatformat:'g' }}</p>
+
+    <form action="{% url 'checkoutcredit' data %}" method="post">
+        {% csrf_token %}
+        <button>ชำระ</button>
+    </form>
 </section>
 {% endblock %}
