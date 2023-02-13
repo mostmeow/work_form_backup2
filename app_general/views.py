@@ -475,33 +475,32 @@ def checkoutcredit(request, data):
 
     #
     if request.method == 'POST':
-        try:
-            token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJCV0VCIiwiaWF0IjoxNjY2MDY3Mzc5LCJleHAiOjE5ODE0MjczNzl9.k4ozQfkb18qzchvwTh8COy75Pdvia0OEVqog3NGij70'
-            url = "https://pgwuat.mycmsk.com/api/v1/2c2p/payment/token/create"
-            headers = {
-                'accept': 'application/json',
-                'Authorization': 'Bearer ' + token,
-                'Content-Type': 'application/json',
-            }
-            data = {
-                "amount": 1000,
-                "invoiceNo": "REFERENCE1",
-                "description": "REFERENCE2",
-                "email": "it-dev@cmsk.co.th"
-            }
-            jsondata = json.dumps(data)
+        # try:
+        token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJCV0VCIiwiaWF0IjoxNjY2MDY3Mzc5LCJleHAiOjE5ODE0MjczNzl9.k4ozQfkb18qzchvwTh8COy75Pdvia0OEVqog3NGij70'
+        url1 = "https://pgwuat.mycmsk.com/api/v1/2c2p/payment/token/create"
+        headers1 = {
+            'accept': 'application/json',
+            'Authorization': 'Bearer ' + token,
+            'Content-Type': 'application/json',
+        }
+        data1 = {
+            "amount": allprice,
+            "invoiceNo": "REFERENCE1",
+            "description": "REFERENCE2",
+            "email": "it-dev@cmsk.co.th"
+        }
 
-            r = requests.post(url, headers=headers, json=data)
-            print(r.status_code)
-            print(r.json())
+        r1 = requests.post(url1, headers=headers1, json=data1)
+        print(r1.status_code)
+        print(r1.json())
 
-            data = r.json()
-            json_data = json.dumps(data)
-            encoded_json_data = urlsafe_base64_encode(force_bytes(json_data))
+        data1 = r1.json()
+        json_data1 = json.dumps(data1)
+        encoded_json_data1 = urlsafe_base64_encode(force_bytes(json_data1))
 
             # return redirect('qrtransfer', data=encoded_json_data)
-        except:
-            messages.error(request, 'ผิดพลาด')
+        # except:
+        #     messages.error(request, 'ผิดพลาด')
 
     context = {
         'price':price,

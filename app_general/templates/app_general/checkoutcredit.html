@@ -5,18 +5,20 @@
 {% endblock %}
 
 {% block content %}
-<section>
-    <p>ชำระ เครดิต</p>
-    <p>regisid: {{ regidis }}</p>
-    <p>price: {{ price|floatformat:'g' }}</p>
-    <p>ส่วนลด: {{ discount|floatformat:'g' }}</p>
-    <p>vat 7%: {{ vat|floatformat:'g' }}</p>
-    <p>หักภาษี ณ ที่จ่าย 3%: {{ withholding|floatformat:'g' }}</p>
-    <p>allprice: {{ allprice|floatformat:'g' }}</p>
-
-    <form action="{% url 'checkoutcredit' data %}" method="post">
-        {% csrf_token %}
-        <button>ชำระ</button>
-    </form>
+<section class="checkoutsec">
+    <div class="checkoutdiv">
+        <p>ชำระ เครดิต</p>
+        <p>regisid: {{ regidis }}</p>
+        <p>price: {{ price|floatformat:'g' }}</p>
+        <p>ส่วนลด: {{ discount|floatformat:'g' }}</p>
+        <p>vat 7%: {{ vat|floatformat:'g' }}</p>
+        <p>หักภาษี ณ ที่จ่าย 3%: {{ withholding|floatformat:'g' }}</p>
+        <p>allprice: {{ allprice|floatformat:'g' }}</p>
+    
+        <form action="{% url 'checkoutcredit' data %}" method="post">
+            {% csrf_token %}
+            <button class="btn btn-primary mb-3 submitbtn" type="submit">ชำระ</button>
+        </form>
+    </div>
 </section>
 {% endblock %}
