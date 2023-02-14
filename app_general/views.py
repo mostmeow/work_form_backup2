@@ -429,45 +429,46 @@ def checkouttransfer(request, data):
         allprice = price + vat
     
     regisid = jsondata['regisid']
+    print(allprice)
 
     #
     if request.method == 'POST':
         try:
-            app_id = 'CMSK-FORM'
-            secret_key = '9kC0nGN2jLon3Uv91q5VKODYhHLR4nlQ'
-            url1 = "https://pgwuat.mycmsk.com/api/v1/token/create/" + app_id + "/" + secret_key
-            headers1 = {
-                'accept': 'application/json',
-            }
+            # generate api token
+            # app_id = 'CMSK-FORM'
+            # secret_key = '9kC0nGN2jLon3Uv91q5VKODYhHLR4nlQ'
+            # url1 = "https://pgwuat.mycmsk.com/api/v1/token/create/" + app_id + "/" + secret_key
+            # headers1 = {
+            #     'accept': 'application/json',
+            # }
 
-            r1 = requests.get(url1, headers=headers1)
-            print(r1.status_code)
-            print(r1.json())
-            print(r1.json()['token'])
+            # r1 = requests.get(url1, headers=headers1)
+            # print(r1.status_code)
+            # print(r1.json())
+            # print(r1.json()['token'])
 
-            # token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJCV0VCIiwiaWF0IjoxNjY2MDY3Mzc5LCJleHAiOjE5ODE0MjczNzl9.k4ozQfkb18qzchvwTh8COy75Pdvia0OEVqog3NGij70'
-            token = r1.json()['token']
+            token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJDTVNLLUZPUk0iLCJpYXQiOjE2NzYzNjcwMjEsImV4cCI6MTk5MTcyNzAyMX0.8o5m5zFYch2cKFCkbw0QJ3XLBgaJ-bkhjP17E-8wzVo'
 
-            url2 = "https://pgwuat.mycmsk.com/api/v1/scb/payment/qr/create"
-            headers2 = {
+            url = "https://pgwuat.mycmsk.com/api/v1/scb/payment/qr/create"
+            headers = {
                 'accept': 'application/json',
                 'Authorization': 'Bearer ' + token,
                 'Content-Type': 'application/json',
             }
-            bodydata2 = {
-                "amount": allprice,
-                "ref1": invoicenumber,
-                "ref2": productid,
-                "email": email,
-                # "callback": request.build_absolute_uri(),
+            bodydata = {
+                "amount": str(allprice),
+                "ref1": str(invoicenumber),
+                "ref2": str(productid),
+                "email": str(email),
             }
 
-            r2 = requests.post(url2, headers=headers2, json=bodydata2)
-            print(r2.status_code)
-            print(r2.json())
-            print(r2.json()['qrUrl'])
 
-            getdata = r2.json()
+            r = requests.post(url, headers=headers, json=bodydata)
+            print(r.status_code)
+            print(r.json())
+            print(r.json()['qrUrl'])
+
+            getdata = r.json()
             json_data = json.dumps(getdata)
             encoded_json_data = urlsafe_base64_encode(force_bytes(json_data))
 
@@ -524,28 +525,28 @@ def checkoutcredit(request, data):
     #
     if request.method == 'POST':
         try:
-            app_id = 'CMSK-FORM'
-            secret_key = '9kC0nGN2jLon3Uv91q5VKODYhHLR4nlQ'
-            url1 = "https://pgwuat.mycmsk.com/api/v1/token/create/" + app_id + "/" + secret_key
-            headers1 = {
-                'accept': 'application/json',
-            }
+            # generate api token
+            # app_id = 'CMSK-FORM'
+            # secret_key = '9kC0nGN2jLon3Uv91q5VKODYhHLR4nlQ'
+            # url1 = "https://pgwuat.mycmsk.com/api/v1/token/create/" + app_id + "/" + secret_key
+            # headers1 = {
+            #     'accept': 'application/json',
+            # }
 
-            r1 = requests.get(url1, headers=headers1)
-            print(r1.status_code)
-            print(r1.json())
-            print(r1.json()['token'])
+            # r1 = requests.get(url1, headers=headers1)
+            # print(r1.status_code)
+            # print(r1.json())
+            # print(r1.json()['token'])
 
-            # token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJCV0VCIiwiaWF0IjoxNjY2MDY3Mzc5LCJleHAiOjE5ODE0MjczNzl9.k4ozQfkb18qzchvwTh8COy75Pdvia0OEVqog3NGij70'
-            token = r1.json()['token']
+            token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJDTVNLLUZPUk0iLCJpYXQiOjE2NzYzNjcwMjEsImV4cCI6MTk5MTcyNzAyMX0.8o5m5zFYch2cKFCkbw0QJ3XLBgaJ-bkhjP17E-8wzVo'
 
-            url2 = "https://pgwuat.mycmsk.com/api/v1/2c2p/payment/token/create"
-            headers2 = {
+            url = "https://pgwuat.mycmsk.com/api/v1/2c2p/payment/token/create"
+            headers = {
                 'accept': 'application/json',
                 'Authorization': 'Bearer ' + token,
                 'Content-Type': 'application/json',
             }
-            bodydata2 = {
+            bodydata = {
                 "amount": allprice,
                 "invoiceNo": invoicenumber,
                 "description": productid,
@@ -553,11 +554,11 @@ def checkoutcredit(request, data):
                 "frontendReturnUrl":request.get_host(),
             }
 
-            r2 = requests.post(url2, headers=headers2, json=bodydata2)
-            print(r2.status_code)
-            print(r2.json())
-            print(r2.json()['webPaymentUrl'])
-            url2c2p = str(r2.json()['webPaymentUrl'])
+            r = requests.post(url, headers=headers, json=bodydata)
+            print(r.status_code)
+            print(r.json())
+            print(r.json()['webPaymentUrl'])
+            url2c2p = str(r.json()['webPaymentUrl'])
 
             return HttpResponseRedirect(url2c2p)
         except:
