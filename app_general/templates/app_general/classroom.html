@@ -10,6 +10,7 @@
 </div>
 <section class="classroomsec">
     <div class="classroomdiv">
+    {% if allclass_active is not None %}
         {% for class in allclass_active %}
             <div class="classroomitem">
                 <a href="{% url 'registerform' class.id %}">
@@ -38,6 +39,9 @@
                 </a>
             </div>
         {% endfor %}
+    {% else %}
+        <p>ยังไม่มีห้องเรียนที่เปิดรับสมัคร</p>
+    {% endif %}
     </div>
 </section>
 {% endblock %}

@@ -20,6 +20,7 @@ CLASS_TYPE = [
     ('ทบทวนเท่านั้น','ทบทวนเท่านั้น'),
 ]
 class ClassroomModel(models.Model):
+    product_id = models.CharField(max_length=200, blank=True, null=True)
     course = models.ForeignKey(CourseModel, on_delete=models.CASCADE, blank=True, null=True)
     class_type = models.CharField(choices=CLASS_TYPE, max_length=200, blank=True, null=True)
     
@@ -45,7 +46,7 @@ class ClassroomModel(models.Model):
     is_active = models.BooleanField(default=True, blank=True, null=True)
 
     def __str__(self):
-        return str(self.id)
+        return str(self.product_id)
 
     @property
     def get_now_price(self):
@@ -140,6 +141,7 @@ PAYMENVOUCHERTTYPE = [
     ("", ""),
 ]
 class RegisterModel(models.Model):
+    invoice_number = models.CharField(max_length=20, blank=True, null=True)
     classroom = models.ForeignKey(ClassroomModel, on_delete=models.CASCADE, blank=True, null=True)
 
     email = models.EmailField(blank=True, null=True)

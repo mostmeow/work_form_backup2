@@ -12,8 +12,8 @@ class CourseAdmin(admin.ModelAdmin):
 admin.site.register(CourseModel, CourseAdmin)
 
 class ClassroomAdmin(admin.ModelAdmin):
-    list_display = ['id','course','generation','date_start','class_type']
-    list_filter = ['course','class_type','generation',]
+    list_display = ['product_id','course','generation','date_start','class_type']
+    list_filter = ['product_id','course','class_type','generation',]
 
 admin.site.register(ClassroomModel, ClassroomAdmin)
 
@@ -24,9 +24,9 @@ class VoucherAdmin(admin.ModelAdmin):
 admin.site.register(VoucherModel, VoucherAdmin)
 
 class RegisterAdmin(ExportActionMixin, admin.ModelAdmin):
-    list_display = ['classroom','email','name','lastname','timestamp']
+    list_display = ['invoice_number','classroom','email','name','lastname','timestamp']
     list_filter = ['classroom','channel','receipt','paymenttype','paywithvoucher','timestamp',]
-    search_fields = ['name',]
+    search_fields = ['invoice_number',]
 
 admin.site.register(RegisterModel, RegisterAdmin)
 

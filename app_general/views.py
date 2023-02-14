@@ -15,6 +15,8 @@ from django.contrib.auth.decorators import login_required
 
 # custom decorators
 from .decorators import *
+# custom random invoicenumber
+from .randominvoicenumber import random_invoice_number
 
 # ส่งemail
 from newform_test import settings
@@ -118,6 +120,11 @@ def registerform(request, classcode):
     regisform = RegisterForm()
 
     if request.method == 'POST':
+        # generate invoice number
+        invoicenumber = random_invoice_number()
+        # check invoice number ซ้ำหรือไม่
+        while RegisterModel.objects.filter(invoice_number = invoicenumber):
+            invoicenumber = random_invoice_number()
 
         getemail = request.POST['email']
         gettitlenameother = request.POST['titlenameother']
@@ -183,6 +190,8 @@ def registerform(request, classcode):
         getacceptall = request.POST['acceptall']
 
         print(
+            invoicenumber,
+
             getemail,
             gettitlenameother,
             getname, 
@@ -265,6 +274,8 @@ def registerform(request, classcode):
                 print("CHANNEL ID", getthisregis.id)
 
                 regismodel = RegisterModel.objects.get(id=getthisregis.id)
+                # save invoice number
+                regismodel.invoice_number = invoicenumber
                 # save class
                 regismodel.classroom = thisclass
                 #
@@ -334,19 +345,37 @@ def registerform(request, classcode):
                 # messages.success(request, 'ลงทะเบียนสำเร็จ')
                 # return redirect('home')
                 # return redirect('signup', regisid=getthisregis.id)
+                
+                # get taxid
+                if getthis_receipt == 'นามบุคคล':
+                    taxid = getinditaxid
+                elif getthis_receipt == 'นามองค์กร':
+                    taxid = getorgtaxid
+
+                # get product id
+                thisclass = ClassroomModel.objects.get(id=classcode)
+                productid = thisclass.product_id
 
                 try:
                     data = {
+                        'email':getemail,
                         'price':nowprice,
                         'getthis_acctype':getthis_acctype,
                         'regisid':getthisregis.id,
+                        'taxid':taxid,
+                        'invoicenumber':invoicenumber,
+                        'productid':productid,
                         'vouchermargin':thisvoucher.margin,
                     }
                 except:
                     data = {
+                        'email':getemail,
                         'price':nowprice,
                         'getthis_acctype':getthis_acctype,
                         'regisid':getthisregis.id,
+                        'taxid':taxid,
+                        'invoicenumber':invoicenumber,
+                        'productid':productid,
                     }
                     pass
                 
@@ -383,6 +412,9 @@ def checkouttransfer(request, data):
 
     price = float(jsondata['price'])
     acctype = jsondata['getthis_acctype']
+    email = jsondata['email']
+    invoicenumber = jsondata['invoicenumber']
+    productid = jsondata['productid']
 
     vat = price * 0.07
 
@@ -408,16 +440,15 @@ def checkouttransfer(request, data):
                 'Authorization': 'Bearer ' + token,
                 'Content-Type': 'application/json',
             }
-            data = {
+            bodydata = {
                 "amount": allprice,
-                "ref1": "REFERENCE1",
-                "ref2": "REFERENCE2",
-                "email": "it-dev@cmsk.co.th",
-                "callback": request.build_absolute_uri(),
+                "ref1": invoicenumber,
+                "ref2": productid,
+                "email": email,
+                # "callback": request.build_absolute_uri(),
             }
-            jsondata = json.dumps(data)
 
-            r = requests.post(url, headers=headers, json=data)
+            r = requests.post(url, headers=headers, json=bodydata)
             print(r.status_code)
             print(r.json())
             print(r.json()['qrUrl'])
@@ -457,6 +488,9 @@ def checkoutcredit(request, data):
 
     price = float(jsondata['price'])
     acctype = jsondata['getthis_acctype']
+    email = jsondata['email']
+    invoicenumber = jsondata['invoicenumber']
+    productid = jsondata['productid']
 
     vat = price * 0.07
     withholding = price * 0.03
@@ -475,28 +509,31 @@ def checkoutcredit(request, data):
 
     #
     if request.method == 'POST':
-        # try:
-        token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJCV0VCIiwiaWF0IjoxNjY2MDY3Mzc5LCJleHAiOjE5ODE0MjczNzl9.k4ozQfkb18qzchvwTh8COy75Pdvia0OEVqog3NGij70'
-        url = "https://pgwuat.mycmsk.com/api/v1/2c2p/payment/token/create"
-        headers = {
-            'accept': 'application/json',
-            'Authorization': 'Bearer ' + token,
-            'Content-Type': 'application/json',
-        }
-        data = {
-            "amount": allprice,
-            "invoiceNo": "REFERENCE1",
-            "description": "REFERENCE2",
-            "email": "it-dev@cmsk.co.th"
-        }
+        try:
+            token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJCV0VCIiwiaWF0IjoxNjY2MDY3Mzc5LCJleHAiOjE5ODE0MjczNzl9.k4ozQfkb18qzchvwTh8COy75Pdvia0OEVqog3NGij70'
+            url = "https://pgwuat.mycmsk.com/api/v1/2c2p/payment/token/create"
+            headers = {
+                'accept': 'application/json',
+                'Authorization': 'Bearer ' + token,
+                'Content-Type': 'application/json',
+            }
+            bodydata = {
+                "amount": allprice,
+                "invoiceNo": invoicenumber,
+                "description": productid,
+                "email": email,
+                "frontendReturnUrl":request.get_host(),
+            }
 
-        r = requests.post(url, headers=headers, json=data)
-        print(r.status_code)
-        print(r.json())
+            r = requests.post(url, headers=headers, json=bodydata)
+            print(r.status_code)
+            print(r.json())
+            print(r.json()['webPaymentUrl'])
+            url2c2p = str(r.json()['webPaymentUrl'])
 
-            # return redirect('qrtransfer', data=encoded_json_data)
-        # except:
-        #     messages.error(request, 'ผิดพลาด')
+            return HttpResponseRedirect(url2c2p)
+        except:
+            messages.error(request, 'ผิดพลาด')
 
     context = {
         'price':price,
