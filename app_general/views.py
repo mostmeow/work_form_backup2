@@ -433,14 +433,28 @@ def checkouttransfer(request, data):
     #
     if request.method == 'POST':
         try:
-            token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJCV0VCIiwiaWF0IjoxNjY2MDY3Mzc5LCJleHAiOjE5ODE0MjczNzl9.k4ozQfkb18qzchvwTh8COy75Pdvia0OEVqog3NGij70'
-            url = "https://pgwuat.mycmsk.com/api/v1/scb/payment/qr/create"
-            headers = {
+            app_id = 'CMSK-FORM'
+            secret_key = '9kC0nGN2jLon3Uv91q5VKODYhHLR4nlQ'
+            url1 = "https://pgwuat.mycmsk.com/api/v1/token/create/" + app_id + "/" + secret_key
+            headers1 = {
+                'accept': 'application/json',
+            }
+
+            r1 = requests.get(url1, headers=headers1)
+            print(r1.status_code)
+            print(r1.json())
+            print(r1.json()['token'])
+
+            # token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJCV0VCIiwiaWF0IjoxNjY2MDY3Mzc5LCJleHAiOjE5ODE0MjczNzl9.k4ozQfkb18qzchvwTh8COy75Pdvia0OEVqog3NGij70'
+            token = r1.json()['token']
+
+            url2 = "https://pgwuat.mycmsk.com/api/v1/scb/payment/qr/create"
+            headers2 = {
                 'accept': 'application/json',
                 'Authorization': 'Bearer ' + token,
                 'Content-Type': 'application/json',
             }
-            bodydata = {
+            bodydata2 = {
                 "amount": allprice,
                 "ref1": invoicenumber,
                 "ref2": productid,
@@ -448,12 +462,12 @@ def checkouttransfer(request, data):
                 # "callback": request.build_absolute_uri(),
             }
 
-            r = requests.post(url, headers=headers, json=bodydata)
-            print(r.status_code)
-            print(r.json())
-            print(r.json()['qrUrl'])
+            r2 = requests.post(url2, headers=headers2, json=bodydata2)
+            print(r2.status_code)
+            print(r2.json())
+            print(r2.json()['qrUrl'])
 
-            getdata = r.json()
+            getdata = r2.json()
             json_data = json.dumps(getdata)
             encoded_json_data = urlsafe_base64_encode(force_bytes(json_data))
 
@@ -510,14 +524,28 @@ def checkoutcredit(request, data):
     #
     if request.method == 'POST':
         try:
-            token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJCV0VCIiwiaWF0IjoxNjY2MDY3Mzc5LCJleHAiOjE5ODE0MjczNzl9.k4ozQfkb18qzchvwTh8COy75Pdvia0OEVqog3NGij70'
-            url = "https://pgwuat.mycmsk.com/api/v1/2c2p/payment/token/create"
-            headers = {
+            app_id = 'CMSK-FORM'
+            secret_key = '9kC0nGN2jLon3Uv91q5VKODYhHLR4nlQ'
+            url1 = "https://pgwuat.mycmsk.com/api/v1/token/create/" + app_id + "/" + secret_key
+            headers1 = {
+                'accept': 'application/json',
+            }
+
+            r1 = requests.get(url1, headers=headers1)
+            print(r1.status_code)
+            print(r1.json())
+            print(r1.json()['token'])
+
+            # token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJCV0VCIiwiaWF0IjoxNjY2MDY3Mzc5LCJleHAiOjE5ODE0MjczNzl9.k4ozQfkb18qzchvwTh8COy75Pdvia0OEVqog3NGij70'
+            token = r1.json()['token']
+
+            url2 = "https://pgwuat.mycmsk.com/api/v1/2c2p/payment/token/create"
+            headers2 = {
                 'accept': 'application/json',
                 'Authorization': 'Bearer ' + token,
                 'Content-Type': 'application/json',
             }
-            bodydata = {
+            bodydata2 = {
                 "amount": allprice,
                 "invoiceNo": invoicenumber,
                 "description": productid,
@@ -525,11 +553,11 @@ def checkoutcredit(request, data):
                 "frontendReturnUrl":request.get_host(),
             }
 
-            r = requests.post(url, headers=headers, json=bodydata)
-            print(r.status_code)
-            print(r.json())
-            print(r.json()['webPaymentUrl'])
-            url2c2p = str(r.json()['webPaymentUrl'])
+            r2 = requests.post(url2, headers=headers2, json=bodydata2)
+            print(r2.status_code)
+            print(r2.json())
+            print(r2.json()['webPaymentUrl'])
+            url2c2p = str(r2.json()['webPaymentUrl'])
 
             return HttpResponseRedirect(url2c2p)
         except:
