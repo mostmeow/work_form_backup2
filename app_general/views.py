@@ -510,6 +510,7 @@ def checkouttransfer(request, data):
             getdata = {
                 'qrUrl':r.json()['qrUrl'],
                 'amount':str(allprice),
+                'request_id':r.json()['request_id'],
             }
             json_data = json.dumps(getdata)
             encoded_json_data = urlsafe_base64_encode(force_bytes(json_data))
@@ -537,11 +538,13 @@ def qrtransfer(request, data):
 
     qrurl = jsondata['qrUrl']
     amount = jsondata['amount']
+    request_id = jsondata['request_id']
     # print(qrurl)
 
     context = {
         'qrurl':qrurl,
         'amount':amount,
+        'request_id':request_id
     }
     return render(request, 'app_general/qrtransfer.html', context)
 
@@ -607,7 +610,7 @@ def checkoutcredit(request, data):
                 "invoiceNo": invoicenumber,
                 "description": productid,
                 "email": email,
-                "frontendReturnUrl": request.build_absolute_uri('/redirect2c2p'),
+                "frontendReturnUrl": request.build_absolute_uri('/checkoutredirect'),
             }
 
             r = requests.post(url, headers=headers, json=bodydata)
@@ -681,6 +684,7 @@ def checkoutvouchertransfer(request, data):
             getdata = {
                 'qrUrl':r.json()['qrUrl'],
                 'amount':str(allprice),
+                'request_id':r.json()['request_id'],
             }
             json_data = json.dumps(getdata)
             encoded_json_data = urlsafe_base64_encode(force_bytes(json_data))
@@ -731,7 +735,7 @@ def checkoutvouchercredit(request, data):
                 "invoiceNo": invoicenumber,
                 "description": productid,
                 "email": email,
-                "frontendReturnUrl": request.build_absolute_uri('/redirect2c2p'),
+                "frontendReturnUrl": request.build_absolute_uri('/checkoutredirect'),
             }
 
             r = requests.post(url, headers=headers, json=bodydata)
@@ -755,8 +759,8 @@ def checkoutvouchercredit(request, data):
     return render(request, 'app_general/checkoutvouchercredit.html', context)
 
 @csrf_exempt
-def redirect2c2p(request):
-    return render(request, 'app_general/redirect2c2p.html')
+def checkoutredirect(request):
+    return render(request, 'app_general/checkoutredirect.html')
 
 def signup(request, regisid):
     

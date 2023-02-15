@@ -12,5 +12,43 @@
         <p>ชำระ</p>
         <p>{{ amount }}</p>
     </div>
+    <div class="qrsuccessdiv">
+        <p>ชำระเงินสำเร็จ</p>
+        <a href="{% url 'home' %}">
+            <button class="btn btn-primary mb-3 submitbtn">
+                กลับสู่หน้าหลัก
+            </button>
+        </a>
+    </div>
 </section>
+
+<script>
+    let successdiv = document.querySelector('.qrsuccessdiv')
+    let qrtransferdiv = document.querySelector('.qrtransferdiv')
+    successdiv.style.display = "none"
+    setInterval(() => {
+
+        fetch('https://pgwuat.mycmsk.com/api/v1/scb/payment/confirmation/' + '{{request_id}}', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJDTVNLLUZPUk0iLCJpYXQiOjE2NzYzNjcwMjEsImV4cCI6MTk5MTcyNzAyMX0.8o5m5zFYch2cKFCkbw0QJ3XLBgaJ-bkhjP17E-8wzVo',
+            },
+        })
+        .then((response) => response.json())
+        .then((data) => {
+            console.log('Success:', data);
+            if (data.error) {
+                null
+            } else {
+                successdiv.style.display = "block"
+                qrtransferdiv.style.display = "none"
+            }
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+
+    }, 2000)
+</script>
 {% endblock %}
