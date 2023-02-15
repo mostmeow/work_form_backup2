@@ -16,6 +16,8 @@ urlpatterns = [
     path('checkoutvouchertransfer/<str:data>', views.checkoutvouchertransfer, name='checkoutvouchertransfer'),
     path('checkoutvouchercredit/<str:data>', views.checkoutvouchercredit, name='checkoutvouchercredit'),
 
+    path('redirect2c2p', views.redirect2c2p, name='redirect2c2p'),
+
     path('signup/<str:regisid>', views.signup, name='signup'),
     path('signin', views.signin, name='signin'),
     path('signout', views.signout, name='signout'),

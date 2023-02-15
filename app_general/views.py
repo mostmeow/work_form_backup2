@@ -46,6 +46,8 @@ from urllib.request import urlopen
 # requests
 import requests
 
+from django.views.decorators.csrf import csrf_exempt
+
 # date
 import datetime
 
@@ -605,7 +607,7 @@ def checkoutcredit(request, data):
                 "invoiceNo": invoicenumber,
                 "description": productid,
                 "email": email,
-                "frontendReturnUrl":request.get_host(),
+                "frontendReturnUrl": request.build_absolute_uri('/redirect2c2p'),
             }
 
             r = requests.post(url, headers=headers, json=bodydata)
@@ -729,7 +731,7 @@ def checkoutvouchercredit(request, data):
                 "invoiceNo": invoicenumber,
                 "description": productid,
                 "email": email,
-                "frontendReturnUrl":request.get_host(),
+                "frontendReturnUrl": request.build_absolute_uri('/redirect2c2p'),
             }
 
             r = requests.post(url, headers=headers, json=bodydata)
@@ -751,6 +753,10 @@ def checkoutvouchercredit(request, data):
         'data':data,
     }
     return render(request, 'app_general/checkoutvouchercredit.html', context)
+
+@csrf_exempt
+def redirect2c2p(request):
+    return render(request, 'app_general/redirect2c2p.html')
 
 def signup(request, regisid):
     
