@@ -8,12 +8,15 @@
 <section class="checkoutsec">
     <div class="checkoutdiv">
         <p>ชำระ เครดิต</p>
-        <p>regisid: {{ regidis }}</p>
-        <p>price: {{ price|floatformat:'g' }}</p>
+        <p>invoice number: {{ invoicenumber }}</p>
+        <p>ค่าธรรมเนียมหลักสูตร: {{ price|floatformat:'g' }}</p>
         <p>ส่วนลด: {{ discount|floatformat:'g' }}</p>
         <p>vat 7%: {{ vat|floatformat:'g' }}</p>
-        <p>หักภาษี ณ ที่จ่าย 3%: {{ withholding|floatformat:'g' }}</p>
-        <p>allprice: {{ allprice|floatformat:'g' }}</p>
+        <p>ค่าธรรมเนียมบัตรเครดิต 3%: {{ credit_fee }}</p>
+        {% if withholding != 0 %}
+            <p>หักภาษี ณ ที่จ่าย 3%: {{ withholding|floatformat:'g' }}</p>
+        {% endif %}
+        <p>รวม: {{ allprice|floatformat:'g' }}</p>
     
         <form action="{% url 'checkoutcredit' data %}" method="post">
             {% csrf_token %}

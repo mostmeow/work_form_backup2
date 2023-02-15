@@ -16,7 +16,8 @@ from django.contrib.auth.decorators import login_required
 # custom decorators
 from .decorators import *
 # custom random invoicenumber
-from .randominvoicenumber import random_invoice_number
+from .randominvoicenumber import random_invoice_number_qr, random_invoice_number_credit
+
 
 # ส่งemail
 from newform_test import settings
@@ -120,11 +121,6 @@ def registerform(request, classcode):
     regisform = RegisterForm()
 
     if request.method == 'POST':
-        # generate invoice number
-        invoicenumber = random_invoice_number()
-        # check invoice number ซ้ำหรือไม่
-        while RegisterModel.objects.filter(invoice_number = invoicenumber):
-            invoicenumber = random_invoice_number()
 
         getemail = request.POST['email']
         gettitlenameother = request.POST['titlenameother']
@@ -190,7 +186,7 @@ def registerform(request, classcode):
         getacceptall = request.POST['acceptall']
 
         print(
-            invoicenumber,
+            # invoicenumber,
 
             getemail,
             gettitlenameother,
@@ -270,6 +266,33 @@ def registerform(request, classcode):
                 getthis_receipt = getthisregis.receipt
                 getthis_paymenttype = getthisregis.paymenttype
                 getthis_paywithvoucher = getthisregis.paywithvoucher
+                
+                # generate invoice number
+                if getthis_paymenttype == "เงินโอน":
+                    invoicenumber = random_invoice_number_qr()
+                    # check invoice number ซ้ำหรือไม่
+                    while RegisterModel.objects.filter(invoice_number = invoicenumber):
+                        invoicenumber = random_invoice_number_qr()
+
+                elif getthis_paymenttype == "บัตรเครดิต":
+                    invoicenumber = random_invoice_number_credit()
+                    # check invoice number ซ้ำหรือไม่
+                    while RegisterModel.objects.filter(invoice_number = invoicenumber):
+                        invoicenumber = random_invoice_number_credit()
+
+                elif getthis_paywithvoucher == "เงินโอน":
+                    invoicenumber = random_invoice_number_qr()
+                    # check invoice number ซ้ำหรือไม่
+                    while RegisterModel.objects.filter(invoice_number = invoicenumber):
+                        invoicenumber = random_invoice_number_qr()
+
+                elif getthis_paywithvoucher == "บัตรเครดิต":
+                    invoicenumber = random_invoice_number_credit()
+                    # check invoice number ซ้ำหรือไม่
+                    while RegisterModel.objects.filter(invoice_number = invoicenumber):
+                        invoicenumber = random_invoice_number_credit()
+
+
 
                 print("CHANNEL ID", getthisregis.id)
 
@@ -365,6 +388,7 @@ def registerform(request, classcode):
                         'taxid':taxid,
                         'invoicenumber':invoicenumber,
                         'productid':productid,
+                        'gettaxwithholding':gettaxwithholding,
                         'vouchermargin':thisvoucher.margin,
                     }
                 except:
@@ -376,6 +400,7 @@ def registerform(request, classcode):
                         'taxid':taxid,
                         'invoicenumber':invoicenumber,
                         'productid':productid,
+                        'gettaxwithholding':gettaxwithholding,
                     }
                     pass
                 
@@ -415,18 +440,26 @@ def checkouttransfer(request, data):
     email = jsondata['email']
     invoicenumber = jsondata['invoicenumber']
     productid = jsondata['productid']
+    gettaxwithholding = jsondata['gettaxwithholding']
 
+    # หักภาษีณที่จ่ายไหม
+    withholding = 0
+    if gettaxwithholding == 'WHT':
+        withholding = price * 0.03
+    elif gettaxwithholding == 'eWHT':
+        withholding = price * 0.02
+    
     vat = price * 0.07
 
     if acctype == 'สมาชิกสมาคม':
         discount = 300
-        allprice = price - 300 + vat
+        allprice = price - 300 + vat - withholding
     elif acctype == 'นิสิต/นักศึกษา':
         discount = 1000
-        allprice = price - 1000 + vat
+        allprice = price - 1000 + vat - withholding
     elif acctype == 'บุคคลทั่วไป':
         discount = 0
-        allprice = price + vat
+        allprice = price + vat - withholding
     
     regisid = jsondata['regisid']
     print(allprice)
@@ -489,6 +522,8 @@ def checkouttransfer(request, data):
         'allprice':allprice,
         'regisid':regisid,
         'discount':discount,
+        'withholding':withholding,
+        'invoicenumber':invoicenumber,
         'data':data,
     }
     return render(request, 'app_general/checkouttransfer.html', context)
@@ -517,19 +552,27 @@ def checkoutcredit(request, data):
     email = jsondata['email']
     invoicenumber = jsondata['invoicenumber']
     productid = jsondata['productid']
+    gettaxwithholding = jsondata['gettaxwithholding']
+
+    # หักภาษีณที่จ่ายไหม
+    withholding = 0
+    if gettaxwithholding == 'WHT':
+        withholding = price * 0.03
+    elif gettaxwithholding == 'eWHT':
+        withholding = price * 0.02
 
     vat = price * 0.07
-    withholding = price * 0.03
+    credit_fee = price * 0.03
 
     if acctype == 'สมาชิกสมาคม':
         discount = 300
-        allprice = price - 300 + vat - withholding
+        allprice = price - 300 + vat - withholding + credit_fee
     elif acctype == 'นิสิต/นักศึกษา':
         discount = 1000
-        allprice = price - 1000 + vat - withholding
+        allprice = price - 1000 + vat - withholding + credit_fee
     elif acctype == 'บุคคลทั่วไป':
         discount = 0
-        allprice = price + vat - withholding
+        allprice = price + vat - withholding + credit_fee
 
     regisid = jsondata['regisid']
 
@@ -582,6 +625,8 @@ def checkoutcredit(request, data):
         'regisid':regisid,
         'discount':discount,
         'withholding':withholding,
+        'invoicenumber':invoicenumber,
+        'credit_fee':credit_fee,
         'data':data,
     }
     return render(request, 'app_general/checkoutcredit.html', context)
