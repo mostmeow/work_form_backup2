@@ -458,7 +458,7 @@ def checkouttransfer(request, data):
             bodydata = {
                 "amount": str(allprice),
                 "ref1": str(invoicenumber),
-                "ref2": str(productid),
+                "ref2": str(productid), #ใช้ REF2 แล้วได้ ?
                 "email": str(email),
             }
 
@@ -466,9 +466,16 @@ def checkouttransfer(request, data):
             r = requests.post(url, headers=headers, json=bodydata)
             print(r.status_code)
             print(r.json())
-            print(r.json()['qrUrl'])
+            # print(r.json()['qrUrl'])
 
-            getdata = r.json()
+            # getdata = r.json()
+            # json_data = json.dumps(getdata)
+            # encoded_json_data = urlsafe_base64_encode(force_bytes(json_data))
+
+            getdata = {
+                'qrUrl':r.json()['qrUrl'],
+                'amount':str(allprice),
+            }
             json_data = json.dumps(getdata)
             encoded_json_data = urlsafe_base64_encode(force_bytes(json_data))
 
@@ -490,10 +497,14 @@ def qrtransfer(request, data):
     json_decoded_data = force_str(urlsafe_base64_decode(data))
     jsondata = json.loads(json_decoded_data)
     print(jsondata)
+
     qrurl = jsondata['qrUrl']
-    print(qrurl)
+    amount = jsondata['amount']
+    # print(qrurl)
+
     context = {
         'qrurl':qrurl,
+        'amount':amount,
     }
     return render(request, 'app_general/qrtransfer.html', context)
 

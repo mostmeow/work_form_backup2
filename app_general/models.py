@@ -2,6 +2,9 @@ from django.db import models
 
 import datetime
 
+from django.db.models.signals import post_delete, pre_save
+from django.dispatch import receiver
+
 # Create your models here.
 
 class CourseModel(models.Model):
@@ -201,14 +204,14 @@ class RegisterModel(models.Model):
     
     acctype = models.CharField(choices=ACCTYPE, max_length=200, blank=True, null=True)
     imageevidence = models.ImageField(blank=True, null=True, upload_to='imageevidence/')
-    imageevidence_data = models.BinaryField(blank=True, null=True)
+    # imageevidence_data = models.BinaryField(blank=True, null=True)
 
     # paymenttype = models.CharField(max_length=200, blank=True, null=True)
     paymenttype = models.CharField(choices=PAYMENTTYPE, max_length=200, blank=True, null=True)
     
     paywithvoucher = models.CharField(choices=PAYMENVOUCHERTTYPE, max_length=200, blank=True, null=True)
     imagevoucherevidence = models.ImageField(blank=True, null=True, upload_to='imagevoucherevidence/')
-    imagevoucherevidence_data = models.BinaryField(blank=True, null=True)
+    # imagevoucherevidence_data = models.BinaryField(blank=True, null=True)
 
     acceptall = models.BooleanField(default=None, blank=True, null=True)
 
@@ -216,3 +219,53 @@ class RegisterModel(models.Model):
 
     def __str__(self):
         return str(self.id)
+    
+@receiver(post_delete, sender=RegisterModel)
+def post_save_image(sender, instance, *args, **kwargs):
+    """ Clean Old Image file """
+    try:
+        instance.imageevidence.delete(save=False)
+    except:
+        pass
+
+@receiver(pre_save, sender=RegisterModel)
+def pre_save_image(sender, instance, *args, **kwargs):
+    """ instance old image file will delete from os """
+    try:
+        old_img = RegisterModel.objects.get(id=instance.id).imageevidence
+
+        try:
+            new_img = instance.imageevidence
+        except:
+            new_img = None
+
+        if new_img != old_img:
+            if old_img is not None:
+                old_img.delete(save=False)
+    except:
+        pass
+
+@receiver(post_delete, sender=RegisterModel)
+def post_save_image(sender, instance, *args, **kwargs):
+    """ Clean Old Image file """
+    try:
+        instance.imagevoucherevidence.delete(save=False)
+    except:
+        pass
+
+@receiver(pre_save, sender=RegisterModel)
+def pre_save_image(sender, instance, *args, **kwargs):
+    """ instance old image file will delete from os """
+    try:
+        old_img = RegisterModel.objects.get(id=instance.id).imagevoucherevidence
+
+        try:
+            new_img = instance.imagevoucherevidence
+        except:
+            new_img = None
+
+        if new_img != old_img:
+            if old_img is not None:
+                old_img.delete(save=False)
+    except:
+        pass

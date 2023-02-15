@@ -5,7 +5,12 @@
 {% endblock %}
 
 {% block content %}
-<section>
-    <img src="{{ qrurl }}">
+<section class="qrtransfersec">
+    <div class="qrtransferdiv">
+        <img class="qr30img" src="{% static 'app_general/assets/pic/qr30.png' %}">
+        <img class="qrimg" src="{{ qrurl }}">
+        <p>ชำระ</p>
+        <p>{{ amount }}</p>
+    </div>
 </section>
 {% endblock %}
