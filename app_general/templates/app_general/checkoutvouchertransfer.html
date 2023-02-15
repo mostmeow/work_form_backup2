@@ -5,12 +5,19 @@
 {% endblock %}
 
 {% block content %}
-<section>
-    <!-- <p>ชำระ เงินโอนvoucher</p>
-    <p>regisid: {{ regidis }}</p>
-    <p>price: {{ price|floatformat:'g' }}</p>
-    <p>vat 7%: {{ vat|floatformat:'g' }}</p> -->
-    <p>vouchermargin: {{ vouchermargin }}</p>
-    <p>allprice: {{ allprice|floatformat:'g' }}</p>
+<section class="checkoutsec">
+    <div class="checkoutdiv">
+        <!-- <p>ชำระ เงินโอนvoucher</p>
+        <p>regisid: {{ regidis }}</p>
+        <p>price: {{ price|floatformat:'g' }}</p>
+        <p>vat 7%: {{ vat|floatformat:'g' }}</p> -->
+        <p>vouchermargin: {{ vouchermargin }}</p>
+        <p>allprice: {{ allprice|floatformat:'g' }}</p>
+        
+        <form action="{% url 'checkoutvouchertransfer' data %}" method="post">
+            {% csrf_token %}
+            <button class="btn btn-primary mb-3 submitbtn" type="submit">ชำระ</button>
+        </form>
+    </div>
 </section>
 {% endblock %}

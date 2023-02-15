@@ -267,7 +267,7 @@ def registerform(request, classcode):
                 getthis_paymenttype = getthisregis.paymenttype
                 getthis_paywithvoucher = getthisregis.paywithvoucher
                 
-                # generate invoice number
+                # generate invoice number (QR OR CR)
                 if getthis_paymenttype == "เงินโอน":
                     invoicenumber = random_invoice_number_qr()
                     # check invoice number ซ้ำหรือไม่
@@ -637,11 +637,55 @@ def checkoutvouchertransfer(request, data):
 
     price = float(jsondata['price'])
     vouchermargin = float(jsondata['vouchermargin'])
+    acctype = jsondata['getthis_acctype']
+    email = jsondata['email']
+    invoicenumber = jsondata['invoicenumber']
+    productid = jsondata['productid']
+    gettaxwithholding = jsondata['gettaxwithholding']
     vat = price * 0.07
     # allprice = price + vat
     allprice = vouchermargin
 
     regisid = jsondata['regisid']
+
+    #
+    if request.method == 'POST':
+        try:
+            token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJDTVNLLUZPUk0iLCJpYXQiOjE2NzYzNjcwMjEsImV4cCI6MTk5MTcyNzAyMX0.8o5m5zFYch2cKFCkbw0QJ3XLBgaJ-bkhjP17E-8wzVo'
+
+            url = "https://pgwuat.mycmsk.com/api/v1/scb/payment/qr/create"
+            headers = {
+                'accept': 'application/json',
+                'Authorization': 'Bearer ' + token,
+                'Content-Type': 'application/json',
+            }
+            bodydata = {
+                "amount": str(allprice),
+                "ref1": str(invoicenumber),
+                "ref2": str(productid), #ใช้ REF2 แล้วได้ ?
+                "email": str(email),
+            }
+
+
+            r = requests.post(url, headers=headers, json=bodydata)
+            print(r.status_code)
+            print(r.json())
+            # print(r.json()['qrUrl'])
+
+            # getdata = r.json()
+            # json_data = json.dumps(getdata)
+            # encoded_json_data = urlsafe_base64_encode(force_bytes(json_data))
+
+            getdata = {
+                'qrUrl':r.json()['qrUrl'],
+                'amount':str(allprice),
+            }
+            json_data = json.dumps(getdata)
+            encoded_json_data = urlsafe_base64_encode(force_bytes(json_data))
+
+            return redirect('qrtransfer', data=encoded_json_data)
+        except:
+            messages.error(request, 'ผิดพลาด')
 
     context = {
         'price':price,
@@ -649,6 +693,7 @@ def checkoutvouchertransfer(request, data):
         'allprice':allprice,
         'regisid':regisid,
         'vouchermargin':vouchermargin,
+        'data':data,
     }
     return render(request, 'app_general/checkoutvouchertransfer.html', context)
 
@@ -658,10 +703,44 @@ def checkoutvouchercredit(request, data):
 
     price = float(jsondata['price'])
     vouchermargin = float(jsondata['vouchermargin'])
+    acctype = jsondata['getthis_acctype']
+    email = jsondata['email']
+    invoicenumber = jsondata['invoicenumber']
+    productid = jsondata['productid']
+    gettaxwithholding = jsondata['gettaxwithholding']
     vat = price * 0.07
     allprice = vouchermargin
 
     regisid = jsondata['regisid']
+
+    #
+    if request.method == 'POST':
+        try:
+            token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJDTVNLLUZPUk0iLCJpYXQiOjE2NzYzNjcwMjEsImV4cCI6MTk5MTcyNzAyMX0.8o5m5zFYch2cKFCkbw0QJ3XLBgaJ-bkhjP17E-8wzVo'
+
+            url = "https://pgwuat.mycmsk.com/api/v1/2c2p/payment/token/create"
+            headers = {
+                'accept': 'application/json',
+                'Authorization': 'Bearer ' + token,
+                'Content-Type': 'application/json',
+            }
+            bodydata = {
+                "amount": allprice,
+                "invoiceNo": invoicenumber,
+                "description": productid,
+                "email": email,
+                "frontendReturnUrl":request.get_host(),
+            }
+
+            r = requests.post(url, headers=headers, json=bodydata)
+            print(r.status_code)
+            print(r.json())
+            print(r.json()['webPaymentUrl'])
+            url2c2p = str(r.json()['webPaymentUrl'])
+
+            return HttpResponseRedirect(url2c2p)
+        except:
+            messages.error(request, 'ผิดพลาด')
 
     context = {
         'price':price,
@@ -669,6 +748,7 @@ def checkoutvouchercredit(request, data):
         'allprice':allprice,
         'regisid':regisid,
         'vouchermargin':vouchermargin,
+        'data':data,
     }
     return render(request, 'app_general/checkoutvouchercredit.html', context)
 
