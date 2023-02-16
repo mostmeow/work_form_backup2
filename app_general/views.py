@@ -526,6 +526,7 @@ def checkouttransfer(request, data):
         'regisid':regisid,
         'discount':discount,
         'withholding':withholding,
+        'gettaxwithholding':gettaxwithholding,
         'invoicenumber':invoicenumber,
         'data':data,
     }
@@ -630,6 +631,7 @@ def checkoutcredit(request, data):
         'regisid':regisid,
         'discount':discount,
         'withholding':withholding,
+        'gettaxwithholding':gettaxwithholding,
         'invoicenumber':invoicenumber,
         'credit_fee':credit_fee,
         'data':data,

@@ -13,7 +13,11 @@
         <p>ส่วนลด: {{ discount|floatformat:'g' }}</p>
         <p>vat 7%: {{ vat|floatformat:'g' }}</p>
         {% if withholding != 0 %}
-            <p>หักภาษี ณ ที่จ่าย 3%: {{ withholding|floatformat:'g' }}</p>
+            {% if gettaxwithholding == 'WHT' %}
+                <p>หักภาษี ณ ที่จ่าย 3%: {{ withholding|floatformat:'g' }}</p>
+            {% elif gettaxwithholding == 'eWHT' %}
+                <p>หักภาษี ณ ที่จ่าย 2%: {{ withholding|floatformat:'g' }}</p>
+            {% endif %}
         {% endif %}
         <p>รวม: {{ allprice|floatformat:'g' }}</p>
     
