@@ -13,6 +13,12 @@
 </section>
 <section class="regissec">
 
+    <div id="spinner">
+        <div class="spinner-border text-success" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+
     <h2 style="font-weight: 600;">{{ thisclass.course.name }}</h2>
     <h3>{{ thisclass.get_class_type_display }}</h3>
 
@@ -921,7 +927,30 @@
         }
     })
 
-    
+    // SPINNER SHOW/HIDE
+    document.querySelector('#spinner').style.display = "none"
+
+    function Sendtoview() {
+
+        document.querySelector('#spinner').style.display = "grid"
+
+        var url = ''
+        fetch(url, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Success:', data)
+            document.querySelector('#spinner').style.display = "none"
+        })
+        .catch((error) => {
+            console.error('Error:', error)
+        })
+
+    }
 
 </script>
 

@@ -485,6 +485,7 @@ def checkouttransfer(request, data):
             token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJDTVNLLUZPUk0iLCJpYXQiOjE2NzYzNjcwMjEsImV4cCI6MTk5MTcyNzAyMX0.8o5m5zFYch2cKFCkbw0QJ3XLBgaJ-bkhjP17E-8wzVo'
 
             url = "https://pgwuat.mycmsk.com/api/v1/scb/payment/qr/create"
+            # url = "https://pgw.mycmsk.com/api/v1/scb/payment/qr/create"
             headers = {
                 'accept': 'application/json',
                 'Authorization': 'Bearer ' + token,
@@ -601,6 +602,7 @@ def checkoutcredit(request, data):
             token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJDTVNLLUZPUk0iLCJpYXQiOjE2NzYzNjcwMjEsImV4cCI6MTk5MTcyNzAyMX0.8o5m5zFYch2cKFCkbw0QJ3XLBgaJ-bkhjP17E-8wzVo'
 
             url = "https://pgwuat.mycmsk.com/api/v1/2c2p/payment/token/create"
+            # url = "https://pgw.mycmsk.com/api/v1/2c2p/payment/token/create"
             headers = {
                 'accept': 'application/json',
                 'Authorization': 'Bearer ' + token,
@@ -661,6 +663,7 @@ def checkoutvouchertransfer(request, data):
             token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJDTVNLLUZPUk0iLCJpYXQiOjE2NzYzNjcwMjEsImV4cCI6MTk5MTcyNzAyMX0.8o5m5zFYch2cKFCkbw0QJ3XLBgaJ-bkhjP17E-8wzVo'
 
             url = "https://pgwuat.mycmsk.com/api/v1/scb/payment/qr/create"
+            # url = "https://pgw.mycmsk.com/api/v1/scb/payment/qr/create"
             headers = {
                 'accept': 'application/json',
                 'Authorization': 'Bearer ' + token,
@@ -727,6 +730,7 @@ def checkoutvouchercredit(request, data):
             token = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJDTVNLLUZPUk0iLCJpYXQiOjE2NzYzNjcwMjEsImV4cCI6MTk5MTcyNzAyMX0.8o5m5zFYch2cKFCkbw0QJ3XLBgaJ-bkhjP17E-8wzVo'
 
             url = "https://pgwuat.mycmsk.com/api/v1/2c2p/payment/token/create"
+            # url = "https://pgw.mycmsk.com/api/v1/2c2p/payment/token/create"
             headers = {
                 'accept': 'application/json',
                 'Authorization': 'Bearer ' + token,

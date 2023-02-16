@@ -17,7 +17,7 @@
                 <img src="{% static 'app_general/assets/pic/dummy.jpg' %}" class="card-img-top" alt="...">
                 <div class="card-body">
                     <h5 class="card-title">{{ course.name }}</h5>
-                    <p class="card-text">คอร์สเรียนการเงิน</p>
+                    <p class="card-text">{{ course.description }}</p>
                     <a href="{% url 'classroom' course.id %}" class="btn btn-primary submitbtn">สมัครเรียน</a>
                 </div>
             </div>
