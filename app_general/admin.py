@@ -4,6 +4,8 @@ from . models import *
 
 from import_export.admin import ExportActionMixin
 
+from .resources import *
+
 # Register your models here.
 
 class CourseAdmin(admin.ModelAdmin):
@@ -27,6 +29,7 @@ class RegisterAdmin(ExportActionMixin, admin.ModelAdmin):
     list_display = ['invoice_number','classroom','email','name','lastname','timestamp']
     list_filter = ['classroom','channel','receipt','paymenttype','paywithvoucher','timestamp',]
     search_fields = ['invoice_number',]
+    resource_class = ClassroomResource
 
 admin.site.register(RegisterModel, RegisterAdmin)
 

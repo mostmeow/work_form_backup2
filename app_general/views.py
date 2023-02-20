@@ -77,11 +77,11 @@ def home(request):
 
 def classroom(request, coursecode):
     thiscourse = CourseModel.objects.get(id=coursecode)
-    allclass = ClassroomModel.objects.filter(course=coursecode)
+    allclass = ClassroomModel.objects.filter(course=coursecode).order_by('date_start')
 
     context = {
-            'allclass':allclass,
-            'thiscourse':thiscourse,
+        'allclass':allclass,
+        'thiscourse':thiscourse,
     }
 
     try:
